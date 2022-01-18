@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/item_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingTop="8dp"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:paddingBottom="8dp">
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_emp_img"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_profile_pic"
+            app:civ_border_color="@color/green_deep"
+            app:civ_border_width="1dp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_emp_address"
+            app:layout_constraintEnd_toStartOf="@id/tv_emp_name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_emp_name" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_emp_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/iv_outlet_go"
+            app:layout_constraintStart_toEndOf="@id/iv_emp_img"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="S M ARIFUR RAHMAN" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_emp_id"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@id/iv_outlet_go"
+            app:layout_constraintStart_toEndOf="@id/iv_emp_img"
+            app:layout_constraintTop_toBottomOf="@+id/tv_emp_name"
+            tools:text="DNCC-MI-01-00001" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_emp_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            app:layout_constraintEnd_toStartOf="@id/iv_outlet_go"
+            app:layout_constraintStart_toStartOf="@id/tv_emp_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_emp_id"
+            tools:text="Shyamoli Mohammadpur Dhaka" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_outlet_go"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_verified_user"
+            app:layout_constraintBottom_toBottomOf="@id/tv_emp_address"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_emp_name" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/green_light"
+            app:layout_constraintEnd_toStartOf="@id/iv_outlet_go"
+            app:layout_constraintStart_toStartOf="@+id/tv_emp_address"
+            app:layout_constraintTop_toBottomOf="@+id/tv_emp_address" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

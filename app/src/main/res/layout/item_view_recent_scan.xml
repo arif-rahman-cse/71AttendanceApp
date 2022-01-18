@@ -1,0 +1,82 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:id="@+id/main_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:selectableItemBackground"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/item_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
+
+            <TextView
+                android:id="@+id/tv_card_no"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
+                android:layout_weight="1.5"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:textColor="@color/gray_blue"
+                tools:text="DNCC-MI-00-00001" />
+
+            <TextView
+                android:id="@+id/tv_employee_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
+                android:layout_weight="1.5"
+                android:ellipsize="end"
+                android:layout_marginStart="6dp"
+                android:maxLength="15"
+                android:textSize="12sp"
+                android:textColor="@color/gray_blue"
+                tools:text="Arif Rahman aaaaa" />
+
+            <TextView
+                android:id="@+id/tv_first_scan"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+
+                android:textAlignment="center"
+                android:textColor="@color/green_deep"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                tools:text="In: 16:54" />
+
+
+            <TextView
+                android:id="@+id/tv_last_scan"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textColor="@color/red"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                tools:text="Out: 12:40" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/light_gray" />
+
+
+    </LinearLayout>
+
+
+</layout>

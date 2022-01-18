@@ -1,0 +1,58 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".Order.OrderSave">
+
+    <group
+        android:id="@+id/setup"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/id_add_new_face"
+            android:icon="@drawable/ic_add_person"
+            android:title="@string/add_face" />
+
+
+    </group>
+
+
+    <group
+        android:id="@+id/outlet"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/daily_attendance_report"
+            android:icon="@drawable/ic_note"
+            android:title="@string/daily_attendance_status" />
+
+        <item
+            android:id="@+id/single_attendance_report"
+            android:icon="@drawable/ic_note"
+            android:title="@string/single_employee_attendance_status" />
+
+        <item
+            android:id="@+id/attendance_summery"
+            android:icon="@drawable/ic_note"
+            android:title="@string/attendance_summary" />
+
+
+    </group>
+
+    <group
+        android:id="@+id/action"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/support_number"
+            android:icon="@drawable/ic_support"
+            android:title="@string/support" />
+
+        <item
+            android:id="@+id/log_out"
+            android:icon="@drawable/ic_logout"
+            android:title="@string/log_out" />
+
+
+    </group>
+
+
+</menu>

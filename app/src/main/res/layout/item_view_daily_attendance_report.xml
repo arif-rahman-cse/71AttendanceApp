@@ -1,0 +1,85 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/item_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
+
+            <TextView
+                android:id="@+id/tv_card_no"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:layout_marginStart="4dp"
+                android:textSize="12sp"
+                tools:text="MILk-0001" />
+
+            <TextView
+                android:id="@+id/tv_employee_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:textSize="12sp"
+                tools:text="Arif Rahman" />
+
+            <TextView
+                android:id="@+id/tv_status"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight=".5"
+                android:layout_marginStart="4dp"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                tools:text="A" />
+
+
+            <TextView
+                android:id="@+id/tv_shift"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:visibility="gone"
+                tools:text="Morning" />
+
+
+            <TextView
+                android:id="@+id/tv_word"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight=".5"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:visibility="gone"
+                tools:text="01" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/light_gray" />
+
+
+    </LinearLayout>
+
+
+</layout>

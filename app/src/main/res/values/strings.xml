@@ -1,0 +1,68 @@
+<resources>
+    <string name="app_name">71 Attendance</string>
+    <string name="app_name_bn">৭১ অ্যাটেনডেন্স </string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+    <string name="app_name_title">71 </string>
+    <string name="app_name_title2">Attendance</string>
+
+    <!-- Bangla title   -->
+    <string name="number_of_card_scan">কার্ড স্ক্যান হয়েছে</string>
+    <string name="scan_card">কার্ড স্ক্যান করুন</string>
+
+    <string name="first_scan">প্রথম স্ক্যান</string>
+    <string name="last_scan"> শেষ স্ক্যান</string>
+    <string name="shift">শিফট</string>
+    <string name="select_employee">এমপ্লয়ী বাছাই করুন</string>
+    <string name="date_validation">শেষ তারিখ বর্তমান তারিখের পরে হতে পারেবে না </string>
+    <string name="total_scan">মোট স্ক্যান হয়েছে ২০ জন </string>
+    <string name="recent_scan_history">রিসেন্ট স্ক্যান হিস্ট্রি </string>
+    <string name="no_scan_history">কোনো স্ক্যান হিস্ট্রি খুঁজে পাওয়া যায়নি!</string>
+    <string name="no_data_found">ডাটা পাওয়া যায়নি !</string>
+    <string name="something_went_wrong">কিছু একটা সমস্যা হয়েছে !</string>
+    <string name="scan_result_title">স্ক্যান ফলাফল</string>
+    <string name="img_verification_title">এমপ্লয়ী ভেরিফিকেশন এর জন্য ছবি তুলুন </string>
+    <string name="start_date">শুরুর তারিখ</string>
+    <string name="end_date">শেষ তারিখ</string>
+
+    <string name="date">তারিখ</string>
+    <string name="address">ঠিকানা</string>
+    <string name="card_holder_name">নাম</string>
+    <string name="card_no">কার্ড নং</string>
+    <string name="card_id_title">কার্ড আইডি</string>
+    <string name="card_owner_title">নাম</string>
+    <string name="designation_title">উপাধি</string>
+    <string name="word_no_title">ওয়ার্ড নং</string>
+    <string name="phone">মোবাইল</string>
+    <string name="btn_done">সম্পন্ন করুন</string>
+    <string name="scan_again">আবার স্ক্যান করুন</string>
+    <string name="phone_number">মোবাইল নাম্বার</string>
+    <string name="password">পাসওয়ার্ড</string>
+    <string name="login">লগইন</string>
+    <string name="support">সাপোর্ট</string>
+    <string name="log_out">লগ আউট</string>
+
+    <!-- Report String -->
+    <string name="daily_attendance_status">ডেইলি অ্যাটেনডেন্স স্ট্যাটাস</string>
+    <string name="single_employee_attendance_status"> একক এমপ্লয়ী অ্যাটেনডেন্স</string>
+    <string name="attendance_summary">অ্যাটেনডেন্স সামারি </string>
+    <string name="show_report">show</string>
+    <string name="download_report">download</string>
+    <string name="select_shift_or_word"> শিফট অথবা ওয়ার্ড বাছাই করুন  </string>
+    <string name="version_code">Version: v2.3.1</string>
+
+    <!--Face Recognition String -->
+    <string name="add_face">ফেইস যুক্ত করুন </string>
+    <string name="employee_list">কর্মী তালিকা</string>
+    <string name="live_face_verification">লাইভ ফেইস ভেরিফিকেশন</string>
+
+
+</resources>
