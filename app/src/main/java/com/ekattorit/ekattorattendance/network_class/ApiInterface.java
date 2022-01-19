@@ -75,16 +75,16 @@ public interface ApiInterface {
     @Multipart
     @POST("attendance/new")
     Call<RpNewScan> addNewAttendance(
-            @Part("business") String business_id,
-            @Part("user") int superVisor,
-            @Part("word_no") String wordNo,
+            //@Part("business") String business_id,
+            //@Part("user") int superVisor,
+            //@Part("word_no") String wordNo,
             @Part("employee") String employeeId,
             @Part("latitude") double latitude,
             @Part("longitude") double longitude,
-            @Part("attendance_count") double attendance_count,
+            //@Part("attendance_count") double attendance_count,
             @Part("address") String address,
-            @Part("scan_status") boolean scan_status,
-            @Part MultipartBody.Part employee_img,
+            //@Part("scan_status") boolean scan_status,
+            //@Part MultipartBody.Part employee_img,
             @Part("scan_by") int scan_by
 
     );

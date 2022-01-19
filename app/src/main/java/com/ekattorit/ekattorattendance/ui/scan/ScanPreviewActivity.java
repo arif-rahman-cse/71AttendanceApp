@@ -92,7 +92,7 @@ public class ScanPreviewActivity extends AppCompatActivity {
                 binding.btnCompleteScan.setAlpha(0.3f);
                 binding.btnCompleteScan.setClickable(false);
 
-                addNewAttendance(empId, empName, wordNo, businessId, supervisorId, attendanceType, userCurrentAddress, latitude, longitude);
+                //addNewAttendance(empId, empName, wordNo, businessId, supervisorId, attendanceType, userCurrentAddress, latitude, longitude);
 
                 //addNewAttendance(empId, empName, wordNo);
                 //getShiftName(empId, empName, wordNo, businessId, supervisorId, attendanceType, userCurrentAddress, latitude, longitude);
@@ -122,6 +122,8 @@ public class ScanPreviewActivity extends AppCompatActivity {
 
     }
 
+    /**
+     *
     private void addNewAttendance(String empId, String empName, String wordNo, String businessId, int supervisorId, boolean attendanceType,
                                   String userCurrentAddress, double latitude, double longitude) {
 
@@ -202,6 +204,7 @@ public class ScanPreviewActivity extends AppCompatActivity {
         });
     }
 
+     */
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

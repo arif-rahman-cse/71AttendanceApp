@@ -44,9 +44,13 @@ import com.ekattorit.ekattorattendance.MainActivity;
 import com.ekattorit.ekattorattendance.R;
 import com.ekattorit.ekattorattendance.SimilarityClassifier;
 import com.ekattorit.ekattorattendance.databinding.ActivityFaceRecognitionBinding;
+import com.ekattorit.ekattorattendance.retrofit.RetrofitClient;
 import com.ekattorit.ekattorattendance.ui.home.HomeActivity;
 import com.ekattorit.ekattorattendance.ui.scan.ScanPreviewActivity;
+import com.ekattorit.ekattorattendance.ui.scan.model.RpNewScan;
+import com.ekattorit.ekattorattendance.utils.AppConfig;
 import com.ekattorit.ekattorattendance.utils.AppProgressBar;
+import com.ekattorit.ekattorattendance.utils.UserCredentialPreference;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -79,12 +83,14 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FaceRecognitionActivity extends AppCompatActivity {
     private static final String TAG = "FaceRecognitionActivity";
+
     ActivityFaceRecognitionBinding binding;
-
-
     Context context = FaceRecognitionActivity.this;
     int OUTPUT_SIZE = 192; //Output size of model
     int inputSize = 112;  //Input size for model
@@ -105,6 +111,10 @@ public class FaceRecognitionActivity extends AppCompatActivity {
     float[][] embeedings;
     private static final int MY_CAMERA_REQUEST_CODE = 100;
 
+    UserCredentialPreference userCredentialPreference;
+
+    String supervisorCurrentAddress;
+    double latitude, longitude;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -113,6 +123,11 @@ public class FaceRecognitionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_face_recognition);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_face_recognition);
         registered = readFromSP(); //Load saved faces from memory when app starts
+        userCredentialPreference = UserCredentialPreference.getPrefarences(FaceRecognitionActivity.this);
+
+        supervisorCurrentAddress = getIntent().getStringExtra(AppConfig.ADDRESS);
+        latitude = getIntent().getDoubleExtra(AppConfig.LATITUDE, 0.0);
+        longitude = getIntent().getDoubleExtra(AppConfig.LONGITUDE, 0.0);
 
 
         //Camera Permission
@@ -197,7 +212,7 @@ public class FaceRecognitionActivity extends AppCompatActivity {
 
         }
 //        System.out.println("OUTPUT"+ Arrays.deepToString(outut));
-        Toast.makeText(context, "Recognitions Loaded", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context, "Recognitions Loaded", Toast.LENGTH_SHORT).show();
         return retrievedMap;
     }
 
@@ -298,6 +313,7 @@ public class FaceRecognitionActivity extends AppCompatActivity {
                                                         binding.status.setText("Add Face");
                                                     else
                                                         binding.status.setText("No Face Detected!");
+                                                    binding.status.setTextColor((getResources().getColor(R.color.yellow)));
                                                 }
 
                                             }
@@ -391,10 +407,13 @@ public class FaceRecognitionActivity extends AppCompatActivity {
                 distance = nearest.second;
                 if (distance < 1.000f) //If distance between Closest found face is more than 1.000 ,then output UNKNOWN face.
                 {
-                    binding.status.setText(name);
-                    insertAttendance();
+                    binding.animationView.setVisibility(View.VISIBLE);
+                    binding.status.setText("Face Match");
+                    binding.status.setTextColor((getResources().getColor(R.color.green_deep)));
+                    insertAttendance(name);
                 } else {
                     binding.status.setText("Unknown");
+                    binding.status.setTextColor((getResources().getColor(R.color.red)));
                 }
                 System.out.println("nearest: " + name + " - distance: " + distance);
 
@@ -405,12 +424,53 @@ public class FaceRecognitionActivity extends AppCompatActivity {
 
     }
 
-    private void insertAttendance() {
+    private void insertAttendance(String employeeId) {
         Log.d(TAG, "insertAttendance: ");
-        Toast.makeText(context, "Done..........", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(FaceRecognitionActivity.this, HomeActivity.class);
-        startActivity(intent);
-        finish();
+
+        Call<RpNewScan> newScanCall = RetrofitClient
+                .getInstance()
+                .getApi()
+                .addNewAttendance(employeeId.trim(), latitude, longitude, supervisorCurrentAddress, userCredentialPreference.getUserId());
+
+        newScanCall.enqueue(new Callback<RpNewScan>() {
+            @Override
+            public void onResponse(Call<RpNewScan> call, Response<RpNewScan> response) {
+                Log.d(TAG, "onResponse: " + response.code());
+                //binding.attendancePb.setVisibility(View.GONE);
+                //binding.btnCompleteScan.setAlpha(1f);
+                //binding.btnCompleteScan.setClickable(true);
+                RpNewScan rpNewScan = response.body();
+                if (response.code() == 201) {
+                    Intent intent = new Intent(FaceRecognitionActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+
+                } else if (response.code() == 200) {
+                    Intent intent = new Intent(FaceRecognitionActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+
+
+                } else {
+                    try {
+                        Log.d(TAG, "onResponse: Error: " + response.errorBody().string());
+                        Toast.makeText(FaceRecognitionActivity.this, " কিছু একটা সমস্যা হয়েছে " + response.errorBody().string(), Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RpNewScan> call, Throwable t) {
+                //binding.attendancePb.setVisibility(View.GONE);
+                //binding.btnCompleteScan.setClickable(true);
+                //binding.btnCompleteScan.setAlpha(1f);
+                Toast.makeText(FaceRecognitionActivity.this, " কিছু একটা সমস্যা হয়েছে " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "onFailure: Error: " + t.getMessage());
+            }
+        });
     }
 
     //Compare Faces by distance between face embeddings

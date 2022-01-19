@@ -18,6 +18,9 @@
         android:theme="@style/Theme.FaceRecognition.NoActionBar"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.face.EmployeeCardScanActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.face.FaceRecognitionActivity"
             android:exported="false" />
         <activity

@@ -70,8 +70,13 @@ public class ActivitySplashScreen extends AppCompatActivity {
                     RpLogin rpLogin = response.body();
                     userCredentialPreference.setName(rpLogin.getFirstName() + " " + rpLogin.getLastName());
                     userCredentialPreference.setUserId(rpLogin.getId());
-                    //Log.d(TAG, "onResponse: User Id: "+ rpLogin.getId());
                     userCredentialPreference.setProfileUrl(rpLogin.getImage());
+
+                    userCredentialPreference.setUserType(rpLogin.getUsers_type());
+                    userCredentialPreference.setSuperVisorLatitude(rpLogin.getSupervisor_latitude());
+                    userCredentialPreference.setSuperVisorLongitude(rpLogin.getSupervisor_longitude());
+                    userCredentialPreference.setSuperVisorRange(rpLogin.getRange());
+                    userCredentialPreference.setSuperVisorWard(rpLogin.getSupervisor_ward());
 
                     Intent intent = new Intent(ActivitySplashScreen.this, HomeActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

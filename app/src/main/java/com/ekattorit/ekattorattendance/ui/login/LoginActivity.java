@@ -125,6 +125,12 @@ public class LoginActivity extends AppCompatActivity {
                     userCredentialPreference.setUserId(rpLogin.getId());
                     userCredentialPreference.setProfileUrl(rpLogin.getImage());
 
+                    userCredentialPreference.setUserType(rpLogin.getUsers_type());
+                    userCredentialPreference.setSuperVisorLatitude(rpLogin.getSupervisor_latitude());
+                    userCredentialPreference.setSuperVisorLongitude(rpLogin.getSupervisor_longitude());
+                    userCredentialPreference.setSuperVisorRange(rpLogin.getRange());
+                    userCredentialPreference.setSuperVisorWard(rpLogin.getSupervisor_ward());
+
 
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

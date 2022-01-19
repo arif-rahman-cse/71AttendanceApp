@@ -74,8 +74,6 @@ public class UserCredentialPreference {
     }
 
 
-
-
     public String getProfileUrl() {
         return sharedPreferences.getString(AppConfig.PROFILE_IMG_URL, null);
     }
@@ -83,6 +81,54 @@ public class UserCredentialPreference {
 
     public void setProfileUrl(String profileUrl) {
         editor.putString(AppConfig.PROFILE_IMG_URL, profileUrl);
+        editor.apply();
+    }
+
+    public String getUserType() {
+        return sharedPreferences.getString(AppConfig.USER_TYPE, null);
+    }
+
+    public void setUserType(String userType) {
+        editor.putString(AppConfig.USER_TYPE, userType);
+        editor.apply();
+    }
+
+    public String getSuperVisorLatitude() {
+        return sharedPreferences.getString(AppConfig.SUPERVISOR_LATITUDE, null);
+    }
+
+    public void setSuperVisorLatitude(String superVisorLatitude) {
+        editor.putString(AppConfig.SUPERVISOR_LATITUDE, superVisorLatitude);
+        editor.apply();
+    }
+
+
+    public String getSuperVisorLongitude() {
+        return sharedPreferences.getString(AppConfig.SUPERVISOR_LONGITUDE, null);
+    }
+
+    public void setSuperVisorLongitude(String superVisorLongitude) {
+        editor.putString(AppConfig.SUPERVISOR_LONGITUDE, superVisorLongitude);
+        editor.apply();
+    }
+
+
+    public int getSuperVisorRange() {
+        return sharedPreferences.getInt(AppConfig.RANGE, 0);
+    }
+
+    public void setSuperVisorRange(int superVisorRange) {
+        editor.putInt(AppConfig.RANGE, superVisorRange);
+        editor.apply();
+    }
+
+
+    public String getSuperVisorWard() {
+        return sharedPreferences.getString(AppConfig.SUPERVISOR_WARD, null);
+    }
+
+    public void setSuperVisorWard(String superVisorWard) {
+        editor.putString(AppConfig.SUPERVISOR_WARD, superVisorWard);
         editor.apply();
     }
 

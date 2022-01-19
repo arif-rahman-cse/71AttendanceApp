@@ -108,7 +108,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:src="@drawable/ic_qr_code" />
+                            android:padding="16dp"
+                            android:src="@drawable/scan_face_3" />
 
                     </com.google.android.material.card.MaterialCardView>
 
@@ -117,7 +118,8 @@
                         android:id="@+id/tv_scan_card_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/scan_card"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/tap_to_scan"
                         android:textAlignment="center"
                         android:textSize="16sp"
                         app:layout_constraintEnd_toEndOf="parent"

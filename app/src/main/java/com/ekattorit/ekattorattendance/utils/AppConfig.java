@@ -24,6 +24,11 @@ public class AppConfig {
     public static final String ATTENDANCE_TYPE = "attendance_type";
     public static final String SUPERVISOR_ID = "supervisor_id";
     public static final String PROFILE_IMG_URL = "profile_img_url";
+    public static final String USER_TYPE = "user_type";
+    public static final String SUPERVISOR_LATITUDE = "supervisor_latitude";
+    public static final String SUPERVISOR_LONGITUDE = "supervisor_longitude";
+    public static final String RANGE = "range";
+    public static final String SUPERVISOR_WARD = "supervisor_ward";
 
     public static final String START_DATE = "start_date";
     public static final String END_DATE = "end_date";

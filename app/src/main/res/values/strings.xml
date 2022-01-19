@@ -17,6 +17,7 @@
     <!-- Bangla title   -->
     <string name="number_of_card_scan">কার্ড স্ক্যান হয়েছে</string>
     <string name="scan_card">কার্ড স্ক্যান করুন</string>
+    <string name="tap_to_scan">স্ক্যান করতে ট্যাপ করুন</string>
 
     <string name="first_scan">প্রথম স্ক্যান</string>
     <string name="last_scan"> শেষ স্ক্যান</string>

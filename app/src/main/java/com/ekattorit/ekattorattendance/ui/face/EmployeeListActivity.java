@@ -56,7 +56,7 @@ public class EmployeeListActivity extends AppCompatActivity {
         });
 
         binding.addNewFaceBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(this, CardScanActivity.class);
+            Intent intent = new Intent(this, EmployeeCardScanActivity.class);
             finish();
             startActivity(intent);
         });

@@ -71,15 +71,29 @@
             </androidx.camera.view.PreviewView>
         </FrameLayout>
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animation_view"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:padding="24dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/status"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/container"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/check_okey_done" />
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/status"
-            style="@style/TextAppearance.AppCompat.Display1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
             android:textAlignment="center"
-            android:textColor="@color/green_deep"
-            app:layout_constraintTop_toTopOf="@+id/guideline1"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             tools:text="Unknown" />
 
 
@@ -88,7 +102,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.6" />
+            app:layout_constraintGuide_percent="0.7" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

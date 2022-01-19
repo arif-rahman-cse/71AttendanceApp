@@ -3,11 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/drawable/bg_rectangle_transparent.xml" value="0.252442996742671" />
+        <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/drawable/bg_scanner_fram.xml" value="0.252442996742671" />
+        <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/drawable/bg_scanner_frame.xml" value="0.14868421052631578" />
         <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/drawable/ic_flip_camera.xml" value="0.252442996742671" />
         <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/layout/activity_card_scan.xml" value="0.24473684210526317" />
+        <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/layout/activity_employee_card_scan.xml" value="0.24473684210526317" />
+        <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/layout/activity_employee_list.xml" value="0.24473684210526317" />
         <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/layout/activity_face_recognition.xml" value="0.24473684210526317" />
+        <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/layout/activity_home.xml" value="0.24473684210526317" />
         <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/layout/activity_main.xml" value="0.24473684210526317" />
         <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/layout/activity_scan_preview.xml" value="0.24473684210526317" />
+        <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/layout/activity_splash_screen_2.xml" value="0.24473684210526317" />
         <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/menu/menu_main.xml" value="0.24473684210526317" />
         <entry key="..\:/Lern_New_Things/Real-Time_Face_Recognition_Android/app/src/main/res/drawable/add_person.xml" value="0.252442996742671" />
         <entry key="..\:/Lern_New_Things/Real-Time_Face_Recognition_Android/app/src/main/res/drawable/bg_circle_green.xml" value="0.23541666666666666" />

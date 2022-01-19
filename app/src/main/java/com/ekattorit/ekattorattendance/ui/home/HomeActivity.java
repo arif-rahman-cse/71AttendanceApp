@@ -12,6 +12,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -71,6 +72,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private RecentScanAdapter recentScanAdapter;
     private FusedLocationProviderClient mFusedLocationClient;
     private static final int LOCATION_PERMISSION_ID = 102;
+    boolean isScanFaceCircleClicked = false;
 
 
     @Override
@@ -102,8 +104,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         });
 
         binding.ivScan.setOnClickListener(v -> {
+            isScanFaceCircleClicked = true;
             getUserCurrentLocation();
-
         });
 
 
@@ -310,9 +312,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             double outletLat = mLastLocation.getLatitude();
             double outletLong = mLastLocation.getLongitude();
 
-            getAddress(outletLat, outletLong);
+            //getAddress(outletLat, outletLong);
             Log.d(TAG, "onLocationResult: LAT: " + outletLat);
             Log.d(TAG, "onLocationResult: LONG: " + outletLong);
+
+            if (isScanFaceCircleClicked) {
+                checkSupervisorRadius(outletLat, outletLong);
+            }
 
         }
 
@@ -322,6 +328,74 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             Log.d(TAG, "onLocationAvailability: " + locationAvailability.isLocationAvailable());
         }
     };
+
+
+    private void checkSupervisorRadius(double userCurrentLat, double userCurrentLong) {
+
+        Log.d(TAG, "checkOutletRadius: User Current Lat: " + userCurrentLat);
+        Log.d(TAG, "checkOutletRadius: User Current Long: " + userCurrentLong);
+
+        String superVisorLat = userCredentialPreference.getSuperVisorLatitude();
+        String superVisorLong = userCredentialPreference.getSuperVisorLongitude();
+
+
+        if (superVisorLat != null && superVisorLong != null) {
+
+            if (userCurrentLat > 0 && userCurrentLong > 0) {
+
+                Location startPoint = new Location("locationA");
+                startPoint.setLatitude(userCurrentLat);
+                startPoint.setLongitude(userCurrentLong);
+
+                Location endPoint = new Location("locationA");
+                endPoint.setLatitude(Double.parseDouble(superVisorLat));
+                endPoint.setLongitude(Double.parseDouble(superVisorLong));
+                double distance = startPoint.distanceTo(endPoint);
+
+                Log.d(TAG, "checkOutletRadius: Distance in Meters: " + distance);
+
+                if (distance <= userCredentialPreference.getSuperVisorRange()) {
+                    AppProgressBar.hideMessageProgress();
+                    Log.d(TAG, "checkOutletRadius: Distance in Meters: " + distance);
+                    getAddress(userCurrentLat, userCurrentLong);
+
+
+                } else {
+                    AppProgressBar.hideMessageProgress();
+                    // mFusedLocationClient.removeLocationUpdates(mLocationCallback);
+                    isScanFaceCircleClicked = false;
+
+                    //mFusedLocationClient.removeLocationUpdates(mLocationCallback);
+                    SweetAlertDialog sDialog = new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE);
+                    sDialog.setCancelable(false);
+                    sDialog.setTitleText("আপনাকে অবশ্যই " + userCredentialPreference.getSuperVisorWard() + " নাম্বার ওয়ার্ড এর সীমার মধ্যে থাকতে হবে")
+                            .setContentText(userCredentialPreference.getSuperVisorWard() + " নাম্বার ওয়ার্ড এর সীমানা থেকে " + String.format(Locale.getDefault(), "%.1f", distance) + " মিটার দূরে আছেন ")
+                            .setConfirmText("রিফ্রেশ")
+                            .setCancelText("বাতিল")
+                            .showCancelButton(false)
+                            .setConfirmButtonBackgroundColor(Color.RED)
+                            .setConfirmClickListener(sweetAlertDialog -> {
+                                Log.d(TAG, "onClick: Stay Here!");
+                                //AppProgressBar.showMessageProgress(HomeActivity.this, "লোকেশন রিফ্রেশ হচ্ছে ... ");
+                                isScanFaceCircleClicked = true;
+                                getUserCurrentLocation();
+                                sweetAlertDialog.dismissWithAnimation();
+                            }).show();
+                }
+            } else {
+                AppProgressBar.hideMessageProgress();
+                isScanFaceCircleClicked = false;
+                AppProgressBar.userAttentionPb(this, "আপনার লোকেশন পাওয়া যায়নি আবার চেষ্টা করুন ");
+            }
+
+        } else {
+            AppProgressBar.hideMessageProgress();
+            isScanFaceCircleClicked = false;
+            AppProgressBar.userAttentionPb(this, "সুপারভাইজার এর লোকেশন পাওয়া যায়নি সাপোর্ট এ যোগাযোগ করুন ");
+        }
+
+
+    }
 
     private void getAddress(double latitude, double longitude) {
         Log.d(TAG, "getAddress: called");
@@ -338,12 +412,19 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 intent.putExtra(AppConfig.LONGITUDE, longitude);
                 mFusedLocationClient.removeLocationUpdates(mLocationCallback);
                 startActivity(intent);
+                finish();
 
             }
         } catch (IOException e) {
             Log.d(TAG, "getAddress: IOException: " + e.getMessage());
         }
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mFusedLocationClient.removeLocationUpdates(mLocationCallback);
     }
 
 
