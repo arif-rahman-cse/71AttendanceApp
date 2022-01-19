@@ -76,7 +76,13 @@ public class ActivitySplashScreen extends AppCompatActivity {
                     userCredentialPreference.setSuperVisorLatitude(rpLogin.getSupervisor_latitude());
                     userCredentialPreference.setSuperVisorLongitude(rpLogin.getSupervisor_longitude());
                     userCredentialPreference.setSuperVisorRange(rpLogin.getRange());
-                    userCredentialPreference.setSuperVisorWard(rpLogin.getSupervisor_ward());
+
+                    if (rpLogin.getSupervisor_ward() == null || rpLogin.getSupervisor_ward().isEmpty()) {
+                        userCredentialPreference.setSuperVisorWard("0");
+                    } else {
+                        userCredentialPreference.setSuperVisorWard(rpLogin.getSupervisor_ward());
+                    }
+
 
                     Intent intent = new Intent(ActivitySplashScreen.this, HomeActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

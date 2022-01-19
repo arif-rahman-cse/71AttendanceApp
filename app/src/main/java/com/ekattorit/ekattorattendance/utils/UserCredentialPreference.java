@@ -124,7 +124,7 @@ public class UserCredentialPreference {
 
 
     public String getSuperVisorWard() {
-        return sharedPreferences.getString(AppConfig.SUPERVISOR_WARD, null);
+        return sharedPreferences.getString(AppConfig.SUPERVISOR_WARD, "0");
     }
 
     public void setSuperVisorWard(String superVisorWard) {

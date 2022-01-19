@@ -129,7 +129,12 @@ public class LoginActivity extends AppCompatActivity {
                     userCredentialPreference.setSuperVisorLatitude(rpLogin.getSupervisor_latitude());
                     userCredentialPreference.setSuperVisorLongitude(rpLogin.getSupervisor_longitude());
                     userCredentialPreference.setSuperVisorRange(rpLogin.getRange());
-                    userCredentialPreference.setSuperVisorWard(rpLogin.getSupervisor_ward());
+
+                    if (rpLogin.getSupervisor_ward() == null || rpLogin.getSupervisor_ward().isEmpty()) {
+                        userCredentialPreference.setSuperVisorWard("0");
+                    } else {
+                        userCredentialPreference.setSuperVisorWard(rpLogin.getSupervisor_ward());
+                    }
 
 
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
