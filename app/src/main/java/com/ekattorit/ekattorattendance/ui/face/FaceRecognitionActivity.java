@@ -39,17 +39,13 @@ import android.util.Pair;
 import android.util.Size;
 import android.view.View;
 import android.widget.Toast;
-
-import com.ekattorit.ekattorattendance.MainActivity;
 import com.ekattorit.ekattorattendance.R;
 import com.ekattorit.ekattorattendance.SimilarityClassifier;
 import com.ekattorit.ekattorattendance.databinding.ActivityFaceRecognitionBinding;
 import com.ekattorit.ekattorattendance.retrofit.RetrofitClient;
 import com.ekattorit.ekattorattendance.ui.home.HomeActivity;
-import com.ekattorit.ekattorattendance.ui.scan.ScanPreviewActivity;
-import com.ekattorit.ekattorattendance.ui.scan.model.RpNewScan;
+import com.ekattorit.ekattorattendance.ui.scan.model.RpNewScan2;
 import com.ekattorit.ekattorattendance.utils.AppConfig;
-import com.ekattorit.ekattorattendance.utils.AppProgressBar;
 import com.ekattorit.ekattorattendance.utils.UserCredentialPreference;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -82,7 +78,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -309,11 +304,16 @@ public class FaceRecognitionActivity extends AppCompatActivity {
                                                         e.printStackTrace();
                                                     }
                                                 } else {
-                                                    if (registered.isEmpty())
-                                                        binding.status.setText("Add Face");
-                                                    else
+                                                    if (registered.isEmpty()) {
+                                                        binding.animationView.setVisibility(View.INVISIBLE);
+                                                        binding.status.setText("Please add face first!");
+                                                        binding.status.setTextColor((getResources().getColor(R.color.yellow)));
+                                                    } else {
+                                                        binding.animationView.setVisibility(View.INVISIBLE);
                                                         binding.status.setText("No Face Detected!");
-                                                    binding.status.setTextColor((getResources().getColor(R.color.yellow)));
+                                                        binding.status.setTextColor((getResources().getColor(R.color.yellow)));
+                                                    }
+
                                                 }
 
                                             }
@@ -410,8 +410,11 @@ public class FaceRecognitionActivity extends AppCompatActivity {
                     binding.animationView.setVisibility(View.VISIBLE);
                     binding.status.setText("Face Match");
                     binding.status.setTextColor((getResources().getColor(R.color.green_deep)));
+                    //Stop detecting
+                    start = false;
                     insertAttendance(name);
                 } else {
+                    binding.animationView.setVisibility(View.INVISIBLE);
                     binding.status.setText("Unknown");
                     binding.status.setTextColor((getResources().getColor(R.color.red)));
                 }
@@ -425,28 +428,34 @@ public class FaceRecognitionActivity extends AppCompatActivity {
     }
 
     private void insertAttendance(String employeeId) {
-        Log.d(TAG, "insertAttendance: ");
+        Log.d(TAG, "insertAttendance: "+employeeId);
 
-        Call<RpNewScan> newScanCall = RetrofitClient
+        Call<RpNewScan2> newScanCall = RetrofitClient
                 .getInstance()
                 .getApi()
                 .addNewAttendance(employeeId.trim(), latitude, longitude, supervisorCurrentAddress, userCredentialPreference.getUserId());
 
-        newScanCall.enqueue(new Callback<RpNewScan>() {
+        newScanCall.enqueue(new Callback<RpNewScan2>() {
             @Override
-            public void onResponse(Call<RpNewScan> call, Response<RpNewScan> response) {
+            public void onResponse(Call<RpNewScan2> call, Response<RpNewScan2> response) {
                 Log.d(TAG, "onResponse: " + response.code());
-                //binding.attendancePb.setVisibility(View.GONE);
-                //binding.btnCompleteScan.setAlpha(1f);
-                //binding.btnCompleteScan.setClickable(true);
-                RpNewScan rpNewScan = response.body();
+                //Log.d(TAG, "onResponse: data: "+ response.body().toString());
+
                 if (response.code() == 201) {
+                    String employeeName = response.body().getEmployeeName();
+                    //Toast.makeText(FaceRecognitionActivity.this, employeeName+ " এর হাজিরা সফল হয়েছে" , Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(FaceRecognitionActivity.this, HomeActivity.class);
+                    intent.putExtra(AppConfig.SCAN_SUCCESS_MSG, employeeName+ " এর হাজিরা সফল হয়েছে");
+                    intent.putExtra(AppConfig.IS_SCAN_SUCCESS, true);
                     startActivity(intent);
                     finish();
 
                 } else if (response.code() == 200) {
+                    String employeeName = response.body().getEmployeeName();
+                    //Toast.makeText(FaceRecognitionActivity.this, employeeName+ " এর হাজিরা হালনাগাদ হয়েছে " , Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(FaceRecognitionActivity.this, HomeActivity.class);
+                    intent.putExtra(AppConfig.SCAN_SUCCESS_MSG, employeeName+ " এর হাজিরা হালনাগাদ সফল হয়েছে");
+                    intent.putExtra(AppConfig.IS_SCAN_SUCCESS, true);
                     startActivity(intent);
                     finish();
 
@@ -455,6 +464,10 @@ public class FaceRecognitionActivity extends AppCompatActivity {
                     try {
                         Log.d(TAG, "onResponse: Error: " + response.errorBody().string());
                         Toast.makeText(FaceRecognitionActivity.this, " কিছু একটা সমস্যা হয়েছে " + response.errorBody().string(), Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(FaceRecognitionActivity.this, HomeActivity.class);
+                        intent.putExtra(AppConfig.IS_SCAN_SUCCESS, false);
+                        startActivity(intent);
+                        finish();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -463,11 +476,13 @@ public class FaceRecognitionActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<RpNewScan> call, Throwable t) {
-                //binding.attendancePb.setVisibility(View.GONE);
-                //binding.btnCompleteScan.setClickable(true);
-                //binding.btnCompleteScan.setAlpha(1f);
+            public void onFailure(Call<RpNewScan2> call, Throwable t) {
+
                 Toast.makeText(FaceRecognitionActivity.this, " কিছু একটা সমস্যা হয়েছে " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(FaceRecognitionActivity.this, HomeActivity.class);
+                intent.putExtra(AppConfig.IS_SCAN_SUCCESS, false);
+                startActivity(intent);
+                finish();
                 Log.d(TAG, "onFailure: Error: " + t.getMessage());
             }
         });
@@ -655,7 +670,7 @@ public class FaceRecognitionActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == MY_CAMERA_REQUEST_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
+                //Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
             }

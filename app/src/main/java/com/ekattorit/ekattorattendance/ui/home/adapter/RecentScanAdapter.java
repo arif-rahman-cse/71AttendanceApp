@@ -49,12 +49,18 @@ public class RecentScanAdapter extends RecyclerView.Adapter<RecentScanAdapter.My
         String inTime = scanItem.getFirstScan();
         String outTime = scanItem.getLastScan();
 
+        if (scanItem.isScanStatus()) {
+            holder.binding.ivStatus.setImageResource(R.drawable.ic_verified);
+        } else {
+            holder.binding.ivStatus.setImageResource(R.drawable.ic_round_warning);
+        }
+
         if (inTime != null && outTime != null) {
 
             try {
                 holder.binding.tvFirstScan.setText(DateTimeFormat.timeFormat(inTime));
 
-                if (inTime.substring(0,5).equals(outTime.substring(0,5))) {
+                if (inTime.substring(0, 5).equals(outTime.substring(0, 5))) {
                     holder.binding.mainView.setBackgroundColor(context.getResources().getColor(R.color.yellow_light));
                     holder.binding.tvLastScan.setText("-");
 

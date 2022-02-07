@@ -1,10 +1,5 @@
 package com.ekattorit.ekattorattendance.ui.face;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.databinding.DataBindingUtil;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,29 +7,24 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
-import android.widget.Toast;
-
-import com.ekattorit.ekattorattendance.MainActivity;
+import android.view.View;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.databinding.DataBindingUtil;
 import com.ekattorit.ekattorattendance.R;
 import com.ekattorit.ekattorattendance.databinding.ActivityEmployeeCardScanBinding;
 import com.ekattorit.ekattorattendance.retrofit.RetrofitClient;
-import com.ekattorit.ekattorattendance.ui.home.HomeActivity;
-import com.ekattorit.ekattorattendance.ui.login.model.RpLoginError;
-import com.ekattorit.ekattorattendance.ui.scan.CardScanActivity;
 import com.ekattorit.ekattorattendance.ui.scan.model.RpEmpDetails;
 import com.ekattorit.ekattorattendance.ui.scan.model.RpError;
 import com.ekattorit.ekattorattendance.utils.AppConfig;
-import com.ekattorit.ekattorattendance.utils.AppProgressBar;
 import com.ekattorit.ekattorattendance.utils.UserCredentialPreference;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
-import com.google.android.material.snackbar.BaseTransientBottomBar;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import java.io.IOException;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -109,9 +99,10 @@ public class EmployeeCardScanActivity extends AppCompatActivity {
             public void receiveDetections(@NonNull Detector.Detections<Barcode> detections) {
                 final SparseArray<Barcode> barcodes = detections.getDetectedItems();
                 if (barcodes.size() != 0) {
-                    Log.d(TAG, "receiveDetections: "+barcodes.valueAt(0).displayValue);
+                    Log.d(TAG, "receiveDetections: " + barcodes.valueAt(0).displayValue);
                     String qrCode = barcodes.valueAt(0).displayValue;
                     //cameraSource.release();
+                    binding.progressBar.setVisibility(View.VISIBLE);
                     barcodeDetector.release();
                     getEmployeeDetails(qrCode.trim());
                 }
@@ -130,8 +121,7 @@ public class EmployeeCardScanActivity extends AppCompatActivity {
         cardDetailsCall.enqueue(new Callback<RpEmpDetails>() {
             @Override
             public void onResponse(Call<RpEmpDetails> call, Response<RpEmpDetails> response) {
-
-                AppProgressBar.hideMessageProgress();
+                binding.progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful() && response.code() == 200) {
 
                     if (response.body() != null) {
@@ -140,7 +130,9 @@ public class EmployeeCardScanActivity extends AppCompatActivity {
                         Log.d(TAG, "onResponse: Details: " + empDetails.getEmpId());
                         if (userCredentialPreference.getSuperVisorWard().equals(empDetails.getWordNo())) {
                             Log.d(TAG, "onResponse: Go to face add activity ");
-                            Intent intent = new Intent(EmployeeCardScanActivity.this, MainActivity.class);
+                            Intent intent = new Intent(EmployeeCardScanActivity.this, AddFaceActivity.class);
+                            intent.putExtra(AppConfig.EMP_ID, empDetails.getEmpId());
+                            intent.putExtra(AppConfig.EMP_NAME, empDetails.getEmpName());
                             startActivity(intent);
                             finish();
 
@@ -148,11 +140,13 @@ public class EmployeeCardScanActivity extends AppCompatActivity {
                             SweetAlertDialog sw = new SweetAlertDialog(EmployeeCardScanActivity.this, SweetAlertDialog.WARNING_TYPE);
                             sw.setCancelable(false);
                             sw.setTitleText(" নির্দেশনা !")
-                                    .setContentText("স্ক্যানকৃত কর্মী আপনার ওয়ার্ড এর নয়, তাই এই এমপ্লয়ী এর উপস্থিতি নিশ্চিতের  জন্য পারমিশন এর প্রয়াজন হতে পারে ।")
+                                    .setContentText("স্ক্যানকৃত কর্মী আপনার ওয়ার্ড এর নয়, তাই এই এমপ্লয়ী এর উপস্থিতি নিশ্চিতের জন্য পারমিশন এর প্রয়াজন হতে পারে ।")
                                     .setConfirmText("ঠিক আছে ")
                                     .setConfirmClickListener(sDialog -> {
                                         sDialog.dismissWithAnimation();
-                                        Intent intent = new Intent(EmployeeCardScanActivity.this, MainActivity.class);
+                                        Intent intent = new Intent(EmployeeCardScanActivity.this, AddFaceActivity.class);
+                                        intent.putExtra(AppConfig.EMP_ID, empDetails.getEmpId());
+                                        intent.putExtra(AppConfig.EMP_NAME, empDetails.getEmpName());
                                         startActivity(intent);
                                         finish();
                                     })
@@ -192,7 +186,7 @@ public class EmployeeCardScanActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<RpEmpDetails> call, Throwable t) {
                 Log.d(TAG, "onFailure: Error: " + t.getMessage());
-                AppProgressBar.hideMessageProgress();
+                binding.progressBar.setVisibility(View.GONE);
             }
         });
 
@@ -208,5 +202,13 @@ public class EmployeeCardScanActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         initialiseDetectorsAndSources();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, EmployeeListActivity.class);
+        finish();
+        startActivity(intent);
     }
 }

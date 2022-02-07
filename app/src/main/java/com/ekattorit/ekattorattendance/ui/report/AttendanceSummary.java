@@ -21,13 +21,10 @@ import com.ekattorit.ekattorattendance.ui.report.model.RpAttendanceSummary;
 import com.ekattorit.ekattorattendance.utils.AppConfig;
 import com.ekattorit.ekattorattendance.utils.AppProgressBar;
 import com.ekattorit.ekattorattendance.utils.UserCredentialPreference;
-
-import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

@@ -35,7 +35,7 @@
             android:layout_marginStart="8dp"
             android:textSize="13sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@id/iv_outlet_go"
+           app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_emp_img"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="S M ARIFUR RAHMAN" />
@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:textSize="12sp"
-            app:layout_constraintEnd_toStartOf="@id/iv_outlet_go"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_emp_img"
             app:layout_constraintTop_toBottomOf="@+id/tv_emp_name"
             tools:text="DNCC-MI-01-00001" />
@@ -58,26 +58,19 @@
             android:textSize="12sp"
             android:maxLines="2"
             android:ellipsize="end"
-            app:layout_constraintEnd_toStartOf="@id/iv_outlet_go"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/tv_emp_name"
             app:layout_constraintTop_toBottomOf="@id/tv_emp_id"
             tools:text="Shyamoli Mohammadpur Dhaka" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_outlet_go"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_verified_user"
-            app:layout_constraintBottom_toBottomOf="@id/tv_emp_address"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_emp_name" />
+
 
         <View
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginTop="8dp"
             android:background="@color/green_light"
-            app:layout_constraintEnd_toStartOf="@id/iv_outlet_go"
+           app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_emp_address"
             app:layout_constraintTop_toBottomOf="@+id/tv_emp_address" />
 

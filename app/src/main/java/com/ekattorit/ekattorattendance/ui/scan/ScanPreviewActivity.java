@@ -1,39 +1,25 @@
 package com.ekattorit.ekattorattendance.ui.scan;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.ekattorit.ekattorattendance.R;
 import com.ekattorit.ekattorattendance.databinding.ActivityScanPreviewBinding;
-import com.ekattorit.ekattorattendance.retrofit.RetrofitClient;
 import com.ekattorit.ekattorattendance.ui.home.HomeActivity;
-import com.ekattorit.ekattorattendance.ui.scan.model.RpNewScan;
 import com.ekattorit.ekattorattendance.utils.AppConfig;
-import com.ekattorit.ekattorattendance.utils.AppProgressBar;
 import com.ekattorit.ekattorattendance.utils.UserCredentialPreference;
-import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
-import java.io.IOException;
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class ScanPreviewActivity extends AppCompatActivity {
     private static final String TAG = "ScanPreviewActivity";
@@ -69,12 +55,12 @@ public class ScanPreviewActivity extends AppCompatActivity {
 
         binding.btnUploadImg.setOnClickListener(view -> {
 
-            ImagePicker.Companion.with(this)
-                    .cameraOnly()
-                    //.crop()                 //Crop image(Optional), Check Customization for more option
-                    .compress(256)            //Final image size will be less than 200 KB  MB(Optional)
-                    .maxResultSize(724, 724)    //Final image resolution will be less than 1080 x 1080(Optional)
-                    .start();
+//            ImagePicker.Companion.with(this)
+//                    .cameraOnly()
+//                    //.crop()                 //Crop image(Optional), Check Customization for more option
+//                    .compress(256)            //Final image size will be less than 200 KB  MB(Optional)
+//                    .maxResultSize(724, 724)    //Final image resolution will be less than 1080 x 1080(Optional)
+//                    .start();
 
         });
 
@@ -210,19 +196,21 @@ public class ScanPreviewActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == Activity.RESULT_OK) {
-
-            //Image Uri will not be null for RESULT_OK
-            Uri selectedImageUri = data.getData();
-            binding.ivEmployeeImg.setImageURI(selectedImageUri);
-            //You can get File object from intent
-            employeeImgFile = ImagePicker.Companion.getFile(data);
-
-        } else if (resultCode == ImagePicker.RESULT_ERROR) {
-            Toast.makeText(this, ImagePicker.Companion.getError(data), Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show();
-        }
+//        if (resultCode == Activity.RESULT_OK) {
+//
+//            //Image Uri will not be null for RESULT_OK
+//            Uri selectedImageUri = data.getData();
+//            binding.ivEmployeeImg.setImageURI(selectedImageUri);
+//            //You can get File object from intent
+//            employeeImgFile = ImagePicker.Companion.getFile(data);
+//
+//        } else if (resultCode == ImagePicker.RESULT_ERROR) {
+//            Toast.makeText(this, ImagePicker.Companion.getError(data), Toast.LENGTH_SHORT).show();
+//        } else {
+//            Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show();
+//        }
+//
+//
     }
 
 }

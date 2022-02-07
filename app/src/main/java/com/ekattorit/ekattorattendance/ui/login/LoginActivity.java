@@ -167,7 +167,7 @@ public class LoginActivity extends AppCompatActivity {
                 binding.loginPb.setVisibility(View.GONE);
                 Log.d(TAG, "onResponse: Error");
                 Log.e(TAG, "onFailure: " + t.getMessage());
-                Toast.makeText(LoginActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, R.string.something_went_wrong+ " "+ t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 

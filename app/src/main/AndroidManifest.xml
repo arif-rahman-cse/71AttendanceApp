@@ -18,11 +18,19 @@
         android:theme="@style/Theme.FaceRecognition.NoActionBar"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.face.LivenessDetectionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.face.AddFaceActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.face.EmployeeCardScanActivity"
             android:exported="false" />
         <activity
             android:name=".ui.face.FaceRecognitionActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.face.EmployeeListActivity"
             android:exported="false" />

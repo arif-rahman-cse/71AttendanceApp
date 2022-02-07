@@ -36,7 +36,6 @@ public class RpLogin {
     @SerializedName("range")
     private int range;
 
-
     @SerializedName("supervisor_ward")
     private String supervisor_ward;
 

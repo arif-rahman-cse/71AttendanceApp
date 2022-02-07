@@ -56,11 +56,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:background="?selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:elevation="1dp"
                 android:focusable="true"
-                android:padding="12dp"
+                android:padding="6dp"
                 android:src="@drawable/ic_flip_camera" />
 
             <androidx.camera.view.PreviewView
@@ -69,6 +68,7 @@
                 android:layout_height="match_parent">
 
             </androidx.camera.view.PreviewView>
+
         </FrameLayout>
 
         <com.airbnb.lottie.LottieAnimationView

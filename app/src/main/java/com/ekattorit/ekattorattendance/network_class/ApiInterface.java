@@ -8,6 +8,7 @@ import com.ekattorit.ekattorattendance.ui.report.model.RpShift;
 import com.ekattorit.ekattorattendance.ui.report.model.RpWord;
 import com.ekattorit.ekattorattendance.ui.scan.model.RpEmpDetails;
 import com.ekattorit.ekattorattendance.ui.scan.model.RpNewScan;
+import com.ekattorit.ekattorattendance.ui.scan.model.RpNewScan2;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -74,7 +76,7 @@ public interface ApiInterface {
 
     @Multipart
     @POST("attendance/new")
-    Call<RpNewScan> addNewAttendance(
+    Call<RpNewScan2> addNewAttendance(
             //@Part("business") String business_id,
             //@Part("user") int superVisor,
             //@Part("word_no") String wordNo,

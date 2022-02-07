@@ -1,5 +1,4 @@
 package com.ekattorit.ekattorattendance.ui.scan;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -9,18 +8,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
-import com.budiyev.android.codescanner.CodeScanner;
 import com.ekattorit.ekattorattendance.MainActivity;
 import com.ekattorit.ekattorattendance.R;
 import com.ekattorit.ekattorattendance.databinding.ActivityCardScanBinding;
 import com.ekattorit.ekattorattendance.retrofit.RetrofitClient;
 import com.ekattorit.ekattorattendance.ui.scan.model.RpEmpDetails;
 import com.ekattorit.ekattorattendance.utils.AppConfig;
-import com.ekattorit.ekattorattendance.utils.AppProgressBar;
 import com.ekattorit.ekattorattendance.utils.UserCredentialPreference;
-
 import java.io.IOException;
-import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -31,7 +26,7 @@ public class CardScanActivity extends AppCompatActivity {
 
     private ActivityCardScanBinding binding;
     private UserCredentialPreference userCredentialPreference;
-    private CodeScanner mCodeScanner;
+    //private CodeScanner mCodeScanner;
     private String qrData, userCurrentAddress;
     private static final int REQUEST_CAMERA = 1000;
     private double latitude, longitude;
@@ -51,7 +46,7 @@ public class CardScanActivity extends AppCompatActivity {
             requestCameraPermission();
 
         } else {
-            readQRCode();
+            //readQRCode();
             //getEmployeeDetails("DNCC-RE-21-00015");
 
         }
@@ -59,7 +54,7 @@ public class CardScanActivity extends AppCompatActivity {
 
     }
 
-
+    /*
     private void readQRCode() {
 
         //scannerView = findViewById(R.id.scanner_view);
@@ -82,6 +77,8 @@ public class CardScanActivity extends AppCompatActivity {
 
     }
 
+     */
+
     private void getEmployeeDetails(String qrData) {
 
         Call<RpEmpDetails> cardDetailsCall = RetrofitClient
@@ -93,7 +90,7 @@ public class CardScanActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<RpEmpDetails> call, Response<RpEmpDetails> response) {
 
-                AppProgressBar.hideMessageProgress();
+                //AppProgressBar.hideMessageProgress();
                 if (response.isSuccessful() && response.code() == 200) {
 
                     if (response.body() != null) {
@@ -130,24 +127,24 @@ public class CardScanActivity extends AppCompatActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    SweetAlertDialog sw = new SweetAlertDialog(CardScanActivity.this, SweetAlertDialog.WARNING_TYPE);
-                    sw.setCancelable(false);
-                            sw
-                            .setTitleText(" নির্দেশনা !")
-                            .setContentText("কার্ডটি ইনএক্টিভ বা ডাটাবেজে নেই !")
-                            .setConfirmText("ঠিক আছে ")
-                            .setConfirmClickListener(sDialog -> {
-                                sDialog.dismissWithAnimation();
-                                finish();
-                            })
-                            .show();
+//                    SweetAlertDialog sw = new SweetAlertDialog(CardScanActivity.this, SweetAlertDialog.WARNING_TYPE);
+//                    sw.setCancelable(false);
+//                            sw
+//                            .setTitleText(" নির্দেশনা !")
+//                            .setContentText("কার্ডটি ইনএক্টিভ বা ডাটাবেজে নেই !")
+//                            .setConfirmText("ঠিক আছে ")
+//                            .setConfirmClickListener(sDialog -> {
+//                                sDialog.dismissWithAnimation();
+//                                finish();
+//                            })
+//                            .show();
                 }
             }
 
             @Override
             public void onFailure(Call<RpEmpDetails> call, Throwable t) {
                 Log.d(TAG, "onFailure: Error: " + t.getMessage());
-                AppProgressBar.hideMessageProgress();
+                //AppProgressBar.hideMessageProgress();
             }
         });
 

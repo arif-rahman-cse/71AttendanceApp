@@ -11,6 +11,12 @@
             android:icon="@drawable/ic_add_person"
             android:title="@string/add_face" />
 
+        <item
+            android:id="@+id/id_remove_face"
+            android:icon="@drawable/ic_remove"
+            android:visible="false"
+            android:title="@string/remove_face" />
+
 
     </group>
 

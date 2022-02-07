@@ -1,13 +1,4 @@
 package com.ekattorit.ekattorattendance.ui.home;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
-import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
@@ -25,15 +16,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import com.bumptech.glide.Glide;
-import com.ekattorit.ekattorattendance.MainActivity;
 import com.ekattorit.ekattorattendance.R;
 import com.ekattorit.ekattorattendance.databinding.ActivityHomeBinding;
 import com.ekattorit.ekattorattendance.retrofit.RetrofitClient;
 import com.ekattorit.ekattorattendance.ui.SupportActivity;
 import com.ekattorit.ekattorattendance.ui.face.EmployeeListActivity;
 import com.ekattorit.ekattorattendance.ui.face.FaceRecognitionActivity;
+import com.ekattorit.ekattorattendance.ui.face.LivenessDetectionActivity;
 import com.ekattorit.ekattorattendance.ui.home.adapter.RecentScanAdapter;
 import com.ekattorit.ekattorattendance.ui.home.model.RpRecentScan;
 import com.ekattorit.ekattorattendance.ui.home.model.ScanItem;
@@ -41,7 +38,6 @@ import com.ekattorit.ekattorattendance.ui.login.LoginActivity;
 import com.ekattorit.ekattorattendance.ui.report.AttendanceSummary;
 import com.ekattorit.ekattorattendance.ui.report.DailyAttendanceStatus;
 import com.ekattorit.ekattorattendance.ui.report.SingleRangeAttendance;
-import com.ekattorit.ekattorattendance.ui.scan.CardScanActivity;
 import com.ekattorit.ekattorattendance.utils.AppConfig;
 import com.ekattorit.ekattorattendance.utils.AppProgressBar;
 import com.ekattorit.ekattorattendance.utils.UserCredentialPreference;
@@ -52,7 +48,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.material.navigation.NavigationView;
-
+import com.google.android.material.snackbar.Snackbar;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -84,6 +80,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         binding.navigationDrawer.setNavigationItemSelectedListener(this);
         binding.tvTotalScanCard.setText(MessageFormat.format("মোট স্ক্যান হয়েছে {0} জন", userCredentialPreference.getTotalScan()));
+
+        if (getIntent().getBooleanExtra(AppConfig.IS_SCAN_SUCCESS, false)) {
+            String msg = getIntent().getStringExtra(AppConfig.SCAN_SUCCESS_MSG);
+            Snackbar.make(binding.mainView, msg, Snackbar.LENGTH_LONG).show();
+        }
         initRecyclerView();
         getRecentScan();
 
@@ -179,6 +180,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.log_out) {
             logout();
             return true;
+
         } else if (id == R.id.daily_attendance_report) {
             Intent intent = new Intent(HomeActivity.this, DailyAttendanceStatus.class);
             startActivity(intent);
@@ -193,13 +195,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             Intent intent = new Intent(HomeActivity.this, AttendanceSummary.class);
             startActivity(intent);
             return true;
+
         } else if (id == R.id.support_number) {
             Intent intent = new Intent(HomeActivity.this, SupportActivity.class);
             startActivity(intent);
             return true;
+
         } else if (id == R.id.id_add_new_face) {
+            closeDrawer();
             Intent intent = new Intent(HomeActivity.this, EmployeeListActivity.class);
             startActivity(intent);
+            //finish();
             return true;
         }
 
@@ -208,12 +214,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private void logout() {
         userCredentialPreference.deleteSharedPrefarance(HomeActivity.this);
-
         Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         finish();
         startActivity(intent);
     }
+
+    private void closeDrawer() {
+        binding.drawerLayout.closeDrawer(GravityCompat.START);
+    }
+
 
 
     //-------------------------------------- Location related --------------------------------------
@@ -355,7 +365,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 Log.d(TAG, "checkOutletRadius: Distance in Meters: " + distance);
 
                 if (distance <= userCredentialPreference.getSuperVisorRange()) {
-                    AppProgressBar.hideMessageProgress();
+                    //AppProgressBar.hideMessageProgress();
                     Log.d(TAG, "checkOutletRadius: Distance in Meters: " + distance);
                     getAddress(userCurrentLat, userCurrentLong);
 
@@ -399,7 +409,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private void getAddress(double latitude, double longitude) {
         Log.d(TAG, "getAddress: called");
-        AppProgressBar.hideMessageProgress();
+        //AppProgressBar.hideMessageProgress();
         try {
             Geocoder geocoder = new Geocoder(this, Locale.getDefault());
             List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);

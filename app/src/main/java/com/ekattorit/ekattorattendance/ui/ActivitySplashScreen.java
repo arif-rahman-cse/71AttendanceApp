@@ -17,6 +17,7 @@ import com.ekattorit.ekattorattendance.ui.home.HomeActivity;
 import com.ekattorit.ekattorattendance.ui.login.LoginActivity;
 import com.ekattorit.ekattorattendance.ui.login.model.RpLogin;
 import com.ekattorit.ekattorattendance.utils.UserCredentialPreference;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
 
@@ -91,13 +92,17 @@ public class ActivitySplashScreen extends AppCompatActivity {
 
 
                 } else {
+                    String error = "";
                     try {
-                        Log.d(TAG, "onResponse: " + response.errorBody().string());
+                        error = response.errorBody().string();
+                        Log.d(TAG, "onResponse: " + error);
+
                     } catch (IOException e) {
                         // handle failure at error parse
                     }
 
-                    goLoginScreen();
+                    //goLoginScreen();
+                    showErrorLogin(error);
                 }
             }
 
@@ -106,11 +111,28 @@ public class ActivitySplashScreen extends AppCompatActivity {
                 binding.splashPb.setVisibility(View.INVISIBLE);
                 Log.d(TAG, "onResponse: Error");
                 Log.e(TAG, "onFailure: " + t.getMessage());
-                goLoginScreen();
+                showErrorLogin(t.getMessage());
+
+
+                //goLoginScreen();
                 //Toast.makeText(SplashScreen.this, "User not found or Password doesn't match", Toast.LENGTH_SHORT).show();
             }
         });
 
+    }
+
+    private void showErrorLogin(String error) {
+        Log.d(TAG, "showErrorLogin: "+error);
+        Snackbar snackbar = Snackbar
+                .make(binding.mainView, "Unable to connect server " + error, Snackbar.LENGTH_INDEFINITE)
+                .setAction("RETRY", view -> {
+                    binding.splashPb.setVisibility(View.VISIBLE);
+                    String userPhone = userCredentialPreference.getUserPhone();
+                    String password = userCredentialPreference.getPassword();
+                    tryLogin(userPhone, password);
+                });
+
+        snackbar.show();
     }
 
     private void goLoginScreen() {

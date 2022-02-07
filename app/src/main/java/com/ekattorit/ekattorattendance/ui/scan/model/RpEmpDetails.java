@@ -58,6 +58,30 @@ public class RpEmpDetails{
 	@SerializedName("attendance_type")
 	private boolean attendanceType;
 
+
+	@SerializedName("emp_name_en")
+	private String emp_name_en;
+
+	@SerializedName("blood_group")
+	private String blood_group;
+
+	@SerializedName("is_face_added")
+	private boolean is_face_added;
+
+	@SerializedName("is_finger_added")
+	private boolean is_finger_added;
+
+	@SerializedName("gender")
+	private String gender;
+
+	@SerializedName("date_of_birth")
+	private String date_of_birth;
+
+	@SerializedName("proxy_supervisor")
+	private int proxy_supervisor;
+
+
+
 	public String getAddress(){
 		return address;
 	}
@@ -129,4 +153,32 @@ public class RpEmpDetails{
 	public boolean isAttendanceType(){
 		return attendanceType;
 	}
+
+    public String getEmp_name_en() {
+        return emp_name_en;
+    }
+
+    public String getBlood_group() {
+        return blood_group;
+    }
+
+    public boolean isIs_face_added() {
+        return is_face_added;
+    }
+
+    public boolean isIs_finger_added() {
+        return is_finger_added;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public String getDate_of_birth() {
+        return date_of_birth;
+    }
+
+    public int getProxy_supervisor() {
+        return proxy_supervisor;
+    }
 }
