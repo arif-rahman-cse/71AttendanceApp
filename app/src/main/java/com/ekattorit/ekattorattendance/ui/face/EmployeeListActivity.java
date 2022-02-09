@@ -142,7 +142,10 @@ public class EmployeeListActivity extends AppCompatActivity {
                     editor.putString("map", jsonString);
                     editor.apply();
                     //Toast.makeText(this, "Recognitions Updated", Toast.LENGTH_SHORT).show();
-                    Snackbar.make(binding.mainView, "ফেইস আপডেট সফল হয়েছে", Snackbar.LENGTH_SHORT).show();
+                    Snackbar snackbar = Snackbar.make(binding.mainView, "ফেইস আপডেট সফল হয়েছে", Snackbar.LENGTH_SHORT);
+                    View view = snackbar.getView();
+                    view.setBackgroundColor(getResources().getColor(R.color.green_deep));
+                    snackbar.show();
                 } else {
                     Snackbar snackbar = Snackbar.make(binding.mainView, "ফেইস রিমুভ করতে আইডি নির্বাচন করুন", Snackbar.LENGTH_LONG);
                     View view = snackbar.getView();

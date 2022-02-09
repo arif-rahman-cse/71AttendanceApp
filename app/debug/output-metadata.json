@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.atharvakale.facerecognition",
+  "applicationId": "com.ekattorit.ekattorattendance",
   "variantName": "debug",
   "elements": [
     {

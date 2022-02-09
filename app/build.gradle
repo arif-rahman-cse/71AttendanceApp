@@ -111,7 +111,7 @@ dependencies {
     //ML KIT
     implementation 'com.google.mlkit:face-detection:16.0.3'
 
-    implementation files('libs/ttvface.aar')
+    //implementation files('libs/ttvface.aar')
     
     //Camera
     implementation 'io.fotoapparat.fotoapparat:library:1.0.4'

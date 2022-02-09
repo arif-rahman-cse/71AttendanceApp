@@ -30,7 +30,6 @@ import com.ekattorit.ekattorattendance.retrofit.RetrofitClient;
 import com.ekattorit.ekattorattendance.ui.SupportActivity;
 import com.ekattorit.ekattorattendance.ui.face.EmployeeListActivity;
 import com.ekattorit.ekattorattendance.ui.face.FaceRecognitionActivity;
-import com.ekattorit.ekattorattendance.ui.face.LivenessDetectionActivity;
 import com.ekattorit.ekattorattendance.ui.home.adapter.RecentScanAdapter;
 import com.ekattorit.ekattorattendance.ui.home.model.RpRecentScan;
 import com.ekattorit.ekattorattendance.ui.home.model.ScanItem;

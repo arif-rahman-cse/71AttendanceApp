@@ -58,7 +58,7 @@
     <string name="show_report">show</string>
     <string name="download_report">download</string>
     <string name="select_shift_or_word"> শিফট অথবা ওয়ার্ড বাছাই করুন  </string>
-    <string name="version_code">Version: v2.4</string>
+    <string name="version_code">Version: v2.4.1_beta</string>
 
     <!--Face Recognition String -->
     <string name="add_face">ফেইস যুক্ত করুন </string>
