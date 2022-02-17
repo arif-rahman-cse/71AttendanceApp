@@ -24,7 +24,7 @@
             android:id="@+id/container"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:padding="16dp"
+            android:layout_margin="16dp"
             app:layout_constraintBottom_toTopOf="@+id/guideline1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -74,7 +74,6 @@
             android:id="@+id/tv_instruction"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
             android:textAlignment="center"
             android:textColor="@color/yellow"
             android:textSize="20sp"
@@ -97,6 +96,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_instruction" />
 
+        <TextView
+            android:id="@+id/tv_match_percent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="80%"
+            android:visibility="gone"
+            android:textSize="18sp"
+            android:textColor="@color/red"
+            android:textStyle="bold"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/container" />
+
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline1"
@@ -104,6 +116,8 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.4" />
+
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

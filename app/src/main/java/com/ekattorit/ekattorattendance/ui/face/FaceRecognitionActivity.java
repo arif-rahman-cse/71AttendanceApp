@@ -31,7 +31,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.YuvImage;
 import android.media.Image;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -118,7 +117,7 @@ public class FaceRecognitionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_face_recognition);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_face_recognition);
         registered = readFromSP(); //Load saved faces from memory when app starts
-        userCredentialPreference = UserCredentialPreference.getPrefarences(FaceRecognitionActivity.this);
+        userCredentialPreference = UserCredentialPreference.getPreferences(FaceRecognitionActivity.this);
 
         supervisorCurrentAddress = getIntent().getStringExtra(AppConfig.ADDRESS);
         latitude = getIntent().getDoubleExtra(AppConfig.LATITUDE, 0.0);
@@ -405,7 +404,7 @@ public class FaceRecognitionActivity extends AppCompatActivity {
                 final String name = nearest.first;
                 label = name;
                 distance = nearest.second;
-                if (distance < 1.000f) //If distance between Closest found face is more than 1.000 ,then output UNKNOWN face.
+                if (distance < 0.8f) //If distance between Closest found face is more than 1.000 ,then output UNKNOWN face.
                 {
                     binding.animationView.setVisibility(View.VISIBLE);
                     binding.status.setText("Face Match");
@@ -441,24 +440,15 @@ public class FaceRecognitionActivity extends AppCompatActivity {
                 Log.d(TAG, "onResponse: " + response.code());
                 //Log.d(TAG, "onResponse: data: "+ response.body().toString());
 
-                if (response.code() == 201) {
+                if (response.code() == 201 || response.code() == 200) {
+                    assert response.body() != null;
                     String employeeName = response.body().getEmployeeName();
                     //Toast.makeText(FaceRecognitionActivity.this, employeeName+ " এর হাজিরা সফল হয়েছে" , Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(FaceRecognitionActivity.this, HomeActivity.class);
-                    intent.putExtra(AppConfig.SCAN_SUCCESS_MSG, employeeName+ " এর হাজিরা সফল হয়েছে");
+                    intent.putExtra(AppConfig.SCAN_SUCCESS_MSG, employeeName+ " এর "+response.body().getMassage());
                     intent.putExtra(AppConfig.IS_SCAN_SUCCESS, true);
                     startActivity(intent);
                     finish();
-
-                } else if (response.code() == 200) {
-                    String employeeName = response.body().getEmployeeName();
-                    //Toast.makeText(FaceRecognitionActivity.this, employeeName+ " এর হাজিরা হালনাগাদ হয়েছে " , Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(FaceRecognitionActivity.this, HomeActivity.class);
-                    intent.putExtra(AppConfig.SCAN_SUCCESS_MSG, employeeName+ " এর হাজিরা হালনাগাদ সফল হয়েছে");
-                    intent.putExtra(AppConfig.IS_SCAN_SUCCESS, true);
-                    startActivity(intent);
-                    finish();
-
 
                 } else {
                     try {

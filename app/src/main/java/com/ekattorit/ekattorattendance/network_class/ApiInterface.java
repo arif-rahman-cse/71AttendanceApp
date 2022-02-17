@@ -1,5 +1,6 @@
 package com.ekattorit.ekattorattendance.network_class;
 
+import com.ekattorit.ekattorattendance.ui.face.model.RpUpFace;
 import com.ekattorit.ekattorattendance.ui.home.model.RpRecentScan;
 import com.ekattorit.ekattorattendance.ui.login.model.RpLogin;
 import com.ekattorit.ekattorattendance.ui.report.model.RpAttendance;
@@ -19,6 +20,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
@@ -115,6 +117,19 @@ public interface ApiInterface {
             @Query("start_date") String start_date,
             @Query("end_date") String end_date
     );
+
+    @FormUrlEncoded
+    @PATCH("upload/face/{pk}")
+    Call<RpUpFace> uploadFace(
+            @Path("pk") int id,
+            @Field("face_embeddings") String face
+    );
+
+    @GET("upload/face/{pk}")
+    Call<RpUpFace> syncFace(
+            @Path("pk") int id
+    );
+
 
 
 }

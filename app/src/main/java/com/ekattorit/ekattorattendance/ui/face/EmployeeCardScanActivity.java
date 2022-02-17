@@ -46,7 +46,7 @@ public class EmployeeCardScanActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee_card_scan);
         binding = DataBindingUtil.setContentView(EmployeeCardScanActivity.this, R.layout.activity_employee_card_scan);
-        userCredentialPreference = UserCredentialPreference.getPrefarences(EmployeeCardScanActivity.this);
+        userCredentialPreference = UserCredentialPreference.getPreferences(EmployeeCardScanActivity.this);
 
     }
 

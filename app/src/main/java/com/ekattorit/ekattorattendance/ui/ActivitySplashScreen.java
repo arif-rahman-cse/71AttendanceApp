@@ -2,14 +2,10 @@ package com.ekattorit.ekattorattendance.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-
-
-import com.ekattorit.ekattorattendance.MainActivity;
 import com.ekattorit.ekattorattendance.R;
 import com.ekattorit.ekattorattendance.databinding.ActivitySplashScreen2Binding;
 import com.ekattorit.ekattorattendance.retrofit.RetrofitClient;
@@ -36,19 +32,13 @@ public class ActivitySplashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen_2);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_splash_screen_2);
-        userCredentialPreference = UserCredentialPreference.getPrefarences(this);
+        userCredentialPreference = UserCredentialPreference.getPreferences(this);
 
         if (userCredentialPreference.getUserPhone() != null && userCredentialPreference.getPassword() != null) {
-            //Log.d(TAG, "onCreate: Shared Prefarance Value Phone: "+ userCredentialPreference.getUserPhone());
-            //Log.d(TAG, "onCreate: Shared Prefarance Value Password: "+ userCredentialPreference.getPassword());
-
             String userPhone = userCredentialPreference.getUserPhone();
-            String password = userCredentialPreference.getPassword();
-
-            tryLogin(userPhone, password);
+            tryLogin(userPhone, userCredentialPreference.getPassword());
 
         } else if (userCredentialPreference.getUserPhone() == null && userCredentialPreference.getPassword() == null) {
-            Log.d(TAG, "onCreate: Shared Prefarance Value Is Null");
             goLoginScreen();
 
 
@@ -69,19 +59,21 @@ public class ActivitySplashScreen extends AppCompatActivity {
                 if (response.code() == 200 && response.isSuccessful()) {
 
                     RpLogin rpLogin = response.body();
+                    assert rpLogin != null;
                     userCredentialPreference.setName(rpLogin.getFirstName() + " " + rpLogin.getLastName());
                     userCredentialPreference.setUserId(rpLogin.getId());
-                    userCredentialPreference.setProfileUrl(rpLogin.getImage());
+                    userCredentialPreference.setProfileUrl(rpLogin.getProfile().getImage());
 
-                    userCredentialPreference.setUserType(rpLogin.getUsers_type());
-                    userCredentialPreference.setSuperVisorLatitude(rpLogin.getSupervisor_latitude());
-                    userCredentialPreference.setSuperVisorLongitude(rpLogin.getSupervisor_longitude());
-                    userCredentialPreference.setSuperVisorRange(rpLogin.getRange());
+                    userCredentialPreference.setUserType(rpLogin.getProfile().getUsersType());
+                    userCredentialPreference.setSuperVisorLatitude(rpLogin.getProfile().getSupervisorLatitude());
+                    userCredentialPreference.setSuperVisorLongitude(rpLogin.getProfile().getSupervisorLongitude());
+                    userCredentialPreference.setSuperVisorRange(rpLogin.getProfile().getRange());
+                    userCredentialPreference.setIsFaceRemovePermission(rpLogin.getProfile().isFaceRemovePermission());
 
-                    if (rpLogin.getSupervisor_ward() == null || rpLogin.getSupervisor_ward().isEmpty()) {
+                    if (rpLogin.getProfile().getSupervisorWard() == null || rpLogin.getProfile().getSupervisorWard().isEmpty()) {
                         userCredentialPreference.setSuperVisorWard("0");
                     } else {
-                        userCredentialPreference.setSuperVisorWard(rpLogin.getSupervisor_ward());
+                        userCredentialPreference.setSuperVisorWard(rpLogin.getProfile().getSupervisorWard());
                     }
 
 
@@ -128,8 +120,7 @@ public class ActivitySplashScreen extends AppCompatActivity {
                 .setAction("RETRY", view -> {
                     binding.splashPb.setVisibility(View.VISIBLE);
                     String userPhone = userCredentialPreference.getUserPhone();
-                    String password = userCredentialPreference.getPassword();
-                    tryLogin(userPhone, password);
+                    tryLogin(userPhone, userCredentialPreference.getPassword());
                 });
 
         snackbar.show();

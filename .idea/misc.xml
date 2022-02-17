@@ -8,23 +8,27 @@
         <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/drawable/bg_scanner_fram.xml" value="0.252442996742671" />
         <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/drawable/bg_scanner_frame.xml" value="0.14868421052631578" />
         <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/drawable/ic_arrow_back.xml" value="0.252442996742671" />
+        <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/drawable/ic_employee.xml" value="0.169" />
         <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/drawable/ic_flip_camera.xml" value="0.252442996742671" />
         <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/drawable/ic_round_warning.xml" value="0.252442996742671" />
+        <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/drawable/ic_up.xml" value="0.1965" />
         <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/drawable/ic_verified.xml" value="0.252442996742671" />
         <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/drawable/ic_warning.xml" value="0.252442996742671" />
         <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/layout/activity_add_face.xml" value="0.24473684210526317" />
         <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/layout/activity_card_scan.xml" value="0.24473684210526317" />
         <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/layout/activity_employee_card_scan.xml" value="0.24473684210526317" />
-        <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/layout/activity_employee_list.xml" value="0.24473684210526317" />
+        <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/layout/activity_employee_list.xml" value="0.18" />
         <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/layout/activity_face_recognition.xml" value="0.24473684210526317" />
         <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/layout/activity_home.xml" value="0.24473684210526317" />
         <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/layout/activity_liveness_detection.xml" value="0.24234527687296417" />
         <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/layout/activity_main.xml" value="0.24473684210526317" />
         <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/layout/activity_scan_preview.xml" value="0.24473684210526317" />
         <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/layout/activity_splash_screen_2.xml" value="0.24473684210526317" />
+        <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/layout/drawer_header_layout.xml" value="0.24234527687296417" />
         <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/layout/item_view_employee_list.xml" value="0.24473684210526317" />
         <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/layout/item_view_recent_scan.xml" value="0.24473684210526317" />
         <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/layout/no_data_found.xml" value="0.24473684210526317" />
+        <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/layout/toolbar_layout.xml" value="0.24234527687296417" />
         <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/menu/menu_main.xml" value="0.24473684210526317" />
         <entry key="..\:/Lern_New_Things/EkattorAttendance/app/src/main/res/menu/navigation_drawer_menu_item.xml" value="0.24473684210526317" />
         <entry key="..\:/Lern_New_Things/Real-Time_Face_Recognition_Android/app/src/main/res/drawable/add_person.xml" value="0.252442996742671" />

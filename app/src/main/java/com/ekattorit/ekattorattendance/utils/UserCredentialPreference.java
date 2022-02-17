@@ -10,14 +10,14 @@ public class UserCredentialPreference {
     private static SharedPreferences.Editor editor;
 
     private UserCredentialPreference(Context context) {
-        sharedPreferences = context.getSharedPreferences(AppConfig.SHARED_PREFARANCE_NAME, Context.MODE_PRIVATE);
+        sharedPreferences = context.getSharedPreferences(AppConfig.USER_CREDENTIAL_PREFERENCE, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
         editor.apply();
 
     }
 
-    //Creating object of private constructor for SharedPrefarance ready to data stored!
-    public static UserCredentialPreference getPrefarences(Context context) {
+    //Creating object of private constructor for SharedPreference ready to data stored!
+    public static UserCredentialPreference getPreferences(Context context) {
         if (userCredentialPreference == null) {
             userCredentialPreference = new UserCredentialPreference(context);
         }
@@ -25,7 +25,7 @@ public class UserCredentialPreference {
     }
 
 
-    //-----------------------------Set value and get value form sharedPrefarance------------------------------//
+    //-----------------------------Set value and get value form SharedPreference------------------------------//
 
     public void setUserPhone(String userPhone) {
         editor.putString(AppConfig.USER_PHONE, userPhone);
@@ -133,8 +133,29 @@ public class UserCredentialPreference {
     }
 
 
-    public void deleteSharedPrefarance(Context mContext) {
-        sharedPreferences = mContext.getSharedPreferences(AppConfig.SHARED_PREFARANCE_NAME, Context.MODE_PRIVATE);
+    public void setIsFaceRemovePermission(boolean isFaceRemovePermission) {
+        editor.putBoolean(AppConfig.IS_REMOVE_FACE_PERMISSION, isFaceRemovePermission);
+        editor.apply();
+    }
+
+
+    public boolean getIsFaceRemovePermission() {
+        return sharedPreferences.getBoolean(AppConfig.IS_REMOVE_FACE_PERMISSION, false);
+    }
+
+    public void setIsSyncFace(boolean isSyncFace) {
+        editor.putBoolean(AppConfig.IS_SYNC_FACE, isSyncFace);
+        editor.apply();
+    }
+
+
+    public boolean getIsSyncFace() {
+        return sharedPreferences.getBoolean(AppConfig.IS_SYNC_FACE, false);
+    }
+
+
+    public void deleteSharedPreference(Context mContext) {
+        sharedPreferences = mContext.getSharedPreferences(AppConfig.USER_CREDENTIAL_PREFERENCE, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
         editor.clear();
         editor.apply();

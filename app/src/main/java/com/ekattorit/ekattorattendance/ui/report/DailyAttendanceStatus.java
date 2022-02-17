@@ -58,7 +58,7 @@ public class DailyAttendanceStatus extends AppCompatActivity {
         setContentView(R.layout.activity_daily_attendance_status);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_daily_attendance_status);
         binding.toolbar.title.setText(getString(R.string.daily_attendance_status));
-        userCredentialPreference = UserCredentialPreference.getPrefarences(DailyAttendanceStatus.this);
+        userCredentialPreference = UserCredentialPreference.getPreferences(DailyAttendanceStatus.this);
 
         String currentDate = java.text.DateFormat.getDateInstance().format(Calendar.getInstance().getTime());
         binding.tvCurrentDate.setText(currentDate);

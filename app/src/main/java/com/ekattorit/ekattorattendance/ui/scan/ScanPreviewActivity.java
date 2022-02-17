@@ -32,7 +32,7 @@ public class ScanPreviewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan_preview);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_scan_preview);
-        userCredentialPreference = UserCredentialPreference.getPrefarences(ScanPreviewActivity.this);
+        userCredentialPreference = UserCredentialPreference.getPreferences(ScanPreviewActivity.this);
 
         Intent scanIntent = getIntent();
         String empId = scanIntent.getStringExtra(AppConfig.EMP_ID);

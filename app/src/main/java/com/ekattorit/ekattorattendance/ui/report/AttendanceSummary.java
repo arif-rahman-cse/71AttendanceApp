@@ -45,7 +45,7 @@ public class AttendanceSummary extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attendance_summary);
         binding = DataBindingUtil.setContentView(AttendanceSummary.this, R.layout.activity_attendance_summary);
-        userCredentialPreference = UserCredentialPreference.getPrefarences(AttendanceSummary.this);
+        userCredentialPreference = UserCredentialPreference.getPreferences(AttendanceSummary.this);
         binding.toolbar.title.setText(getString(R.string.attendance_summary));
 
         String currentDate = java.text.DateFormat.getDateInstance().format(Calendar.getInstance().getTime());

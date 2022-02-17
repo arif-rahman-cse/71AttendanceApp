@@ -31,7 +31,7 @@ public class SupportActivity extends AppCompatActivity {
         setContentView(R.layout.activity_support);
 
         binding = DataBindingUtil.setContentView(SupportActivity.this, R.layout.activity_support);
-        userCredentialPreference = UserCredentialPreference.getPrefarences(SupportActivity.this);
+        userCredentialPreference = UserCredentialPreference.getPreferences(SupportActivity.this);
         binding.toolbar.title.setText(getString(R.string.support));
 
         binding.toolbar.backButton.setOnClickListener(view -> {

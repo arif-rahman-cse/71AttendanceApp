@@ -2,89 +2,54 @@ package com.ekattorit.ekattorattendance.ui.login.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class RpLogin {
-    @SerializedName("is_active")
-    private boolean isActive;
+public class RpLogin{
 
-    @SerializedName("last_name")
-    private String lastName;
+	@SerializedName("is_active")
+	private boolean isActive;
 
-    @SerializedName("id")
-    private int id;
+	@SerializedName("profile")
+	private Profile profile;
 
-    @SerializedName("first_name")
-    private String firstName;
+	@SerializedName("last_name")
+	private String lastName;
 
-    @SerializedName("email")
-    private String email;
+	@SerializedName("id")
+	private int id;
 
-    @SerializedName("username")
-    private String username;
+	@SerializedName("first_name")
+	private String firstName;
 
-    @SerializedName("image")
-    private String image;
+	@SerializedName("email")
+	private String email;
 
-    @SerializedName("users_type")
-    private String users_type;
+	@SerializedName("username")
+	private String username;
 
-    @SerializedName("supervisor_latitude")
-    private String supervisor_latitude;
+	public boolean isIsActive(){
+		return isActive;
+	}
 
-    @SerializedName("supervisor_longitude")
-    private String supervisor_longitude;
+	public Profile getProfile(){
+		return profile;
+	}
 
-    @SerializedName("range")
-    private int range;
+	public String getLastName(){
+		return lastName;
+	}
 
-    @SerializedName("supervisor_ward")
-    private String supervisor_ward;
+	public int getId(){
+		return id;
+	}
 
+	public String getFirstName(){
+		return firstName;
+	}
 
-    public String getImage() {
-        return image;
-    }
+	public String getEmail(){
+		return email;
+	}
 
-    public boolean isIsActive() {
-        return isActive;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getUsers_type() {
-        return users_type;
-    }
-
-    public String getSupervisor_latitude() {
-        return supervisor_latitude;
-    }
-
-    public String getSupervisor_longitude() {
-        return supervisor_longitude;
-    }
-
-    public int getRange() {
-        return range;
-    }
-
-    public String getSupervisor_ward() {
-        return supervisor_ward;
-    }
+	public String getUsername(){
+		return username;
+	}
 }

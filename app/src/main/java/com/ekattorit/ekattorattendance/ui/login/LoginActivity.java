@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,9 +16,12 @@ import android.widget.Toast;
 import com.ekattorit.ekattorattendance.R;
 import com.ekattorit.ekattorattendance.databinding.ActivityLoginBinding;
 import com.ekattorit.ekattorattendance.retrofit.RetrofitClient;
+import com.ekattorit.ekattorattendance.ui.face.model.RpUpFace;
 import com.ekattorit.ekattorattendance.ui.home.HomeActivity;
 import com.ekattorit.ekattorattendance.ui.login.model.RpLogin;
 import com.ekattorit.ekattorattendance.ui.login.model.RpLoginError;
+import com.ekattorit.ekattorattendance.utils.AppConfig;
+import com.ekattorit.ekattorattendance.utils.EmployeeFacePreference;
 import com.ekattorit.ekattorattendance.utils.HideKeyboard;
 import com.ekattorit.ekattorattendance.utils.UserCredentialPreference;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
@@ -35,13 +39,15 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     ActivityLoginBinding binding;
     UserCredentialPreference userCredentialPreference;
+    EmployeeFacePreference employeeFacePreference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
-        userCredentialPreference = UserCredentialPreference.getPrefarences(LoginActivity.this);
+        userCredentialPreference = UserCredentialPreference.getPreferences(LoginActivity.this);
+        employeeFacePreference = EmployeeFacePreference.getPreferences(LoginActivity.this);
 
 
         binding.btnLogin.setOnClickListener(v -> {
@@ -112,7 +118,6 @@ public class LoginActivity extends AppCompatActivity {
         loginCall.enqueue(new Callback<RpLogin>() {
             @Override
             public void onResponse(Call<RpLogin> call, Response<RpLogin> response) {
-                binding.loginPb.setVisibility(View.GONE);
 
                 Log.d(TAG, "onResponse: " + response.code());
 
@@ -123,24 +128,30 @@ public class LoginActivity extends AppCompatActivity {
                     userCredentialPreference.setPassword(password);
                     userCredentialPreference.setName(rpLogin.getFirstName() + " " + rpLogin.getLastName());
                     userCredentialPreference.setUserId(rpLogin.getId());
-                    userCredentialPreference.setProfileUrl(rpLogin.getImage());
+                    userCredentialPreference.setProfileUrl(rpLogin.getProfile().getImage());
+                    userCredentialPreference.setUserType(rpLogin.getProfile().getUsersType());
+                    userCredentialPreference.setSuperVisorLatitude(rpLogin.getProfile().getSupervisorLatitude());
+                    userCredentialPreference.setSuperVisorLongitude(rpLogin.getProfile().getSupervisorLongitude());
+                    userCredentialPreference.setSuperVisorRange(rpLogin.getProfile().getRange());
+                    userCredentialPreference.setIsFaceRemovePermission(rpLogin.getProfile().isFaceRemovePermission());
 
-                    userCredentialPreference.setUserType(rpLogin.getUsers_type());
-                    userCredentialPreference.setSuperVisorLatitude(rpLogin.getSupervisor_latitude());
-                    userCredentialPreference.setSuperVisorLongitude(rpLogin.getSupervisor_longitude());
-                    userCredentialPreference.setSuperVisorRange(rpLogin.getRange());
-
-                    if (rpLogin.getSupervisor_ward() == null || rpLogin.getSupervisor_ward().isEmpty()) {
+                    if (rpLogin.getProfile().getSupervisorWard() == null || rpLogin.getProfile().getSupervisorWard().isEmpty()) {
                         userCredentialPreference.setSuperVisorWard("0");
                     } else {
-                        userCredentialPreference.setSuperVisorWard(rpLogin.getSupervisor_ward());
+                        userCredentialPreference.setSuperVisorWard(rpLogin.getProfile().getSupervisorWard());
                     }
 
-
-                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    finish();
-                    startActivity(intent);
+                    if (!userCredentialPreference.getIsSyncFace()) {
+                        Log.d(TAG, "onResponse: sync Face..");
+                        syncFace(rpLogin.getId());
+                    } else {
+                        Log.d(TAG, "onResponse: face already synced...");
+                        binding.loginPb.setVisibility(View.GONE);
+                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        finish();
+                        startActivity(intent);
+                    }
 
 
                 } else if (response.code() == 400) {
@@ -149,10 +160,7 @@ public class LoginActivity extends AppCompatActivity {
                     RpLoginError loginError;
                     try {
                         loginError = gson.fromJson(response.errorBody().string(), RpLoginError.class);
-                        Log.d(TAG, "onResponse: msg: " + loginError);
-                        //Toast.makeText(LoginActivity.this, loginError.getNonFieldErrors().get(0), Toast.LENGTH_LONG).show();
-                        Snackbar.make(binding.mainView, loginError.getNonFieldErrors().get(0), BaseTransientBottomBar.LENGTH_LONG).show();
-                        Log.d(TAG, "onResponse: " + response.errorBody().string());
+                        showErrorLogin(loginError.getNonFieldErrors().get(0));
                     } catch (IOException e) {
                         // handle failure at error parse
                     }
@@ -164,14 +172,67 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<RpLogin> call, Throwable t) {
                 enableBtn();
-                binding.loginPb.setVisibility(View.GONE);
-                Log.d(TAG, "onResponse: Error");
-                Log.e(TAG, "onFailure: " + t.getMessage());
-                Toast.makeText(LoginActivity.this, R.string.something_went_wrong+ " "+ t.getMessage(), Toast.LENGTH_SHORT).show();
+                showErrorLogin(t.getMessage());
             }
         });
 
 
+    }
+
+    private void showErrorLogin(String error) {
+        Log.d(TAG, "showErrorLogin: "+error);
+        Snackbar snackbar = Snackbar
+                .make(binding.mainView, "Unable to connect server " + error, Snackbar.LENGTH_INDEFINITE)
+                .setAction("RETRY", view -> {
+                    binding.loginPb.setVisibility(View.VISIBLE);
+                    String userPhone = userCredentialPreference.getUserPhone();
+                    tryLogin(userPhone, userCredentialPreference.getPassword());
+                });
+
+        snackbar.show();
+    }
+
+    private void syncFace(int id) {
+
+        Call<RpUpFace> newScanCall = RetrofitClient
+                .getInstance()
+                .getApi()
+                .syncFace(id);
+
+        newScanCall.enqueue(new Callback<RpUpFace>() {
+            @Override
+            public void onResponse(Call<RpUpFace> call, Response<RpUpFace> response) {
+                Log.d(TAG, "onResponse: " + response.code());
+                if (response.code() == 200) {
+                    assert response.body() != null;
+                    if (response.body().getFaceEmbeddings() !=null && !response.body().getFaceEmbeddings().isEmpty()){
+                        employeeFacePreference.setEmpFace(response.body().getFaceEmbeddings());
+                    }else {
+                        employeeFacePreference.setEmpFace(getString(R.string.face_default_value));
+                    }
+                    userCredentialPreference.setIsSyncFace(true);
+                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    finish();
+                    startActivity(intent);
+
+                } else {
+                    try {
+                        Log.d(TAG, "onResponse: Error: " + response.errorBody().string());
+                        Toast.makeText(LoginActivity.this, " কিছু একটা সমস্যা হয়েছে " + response.errorBody().string(), Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RpUpFace> call, Throwable t) {
+                Toast.makeText(LoginActivity.this, " কিছু একটা সমস্যা হয়েছে " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "onFailure: Error: " + t.getMessage());
+            }
+        });
     }
 
 
@@ -182,7 +243,6 @@ public class LoginActivity extends AppCompatActivity {
             return false;
 
         } else if (phone.length() != 11) {
-            //Snackbar.make(binding.mainView, "ফোন নম্বর ১১ ডিজিট হতে হবে", BaseTransientBottomBar.LENGTH_LONG).show();
             binding.etPhone.setError("ফোন নম্বর ১১ ডিজিট হতে হবে");
             binding.etPhone.requestFocus();
             return false;

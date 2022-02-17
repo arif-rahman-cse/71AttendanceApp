@@ -1,7 +1,9 @@
 package com.ekattorit.ekattorattendance.ui.home;
+
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
@@ -16,6 +18,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -23,6 +27,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.bumptech.glide.Glide;
 import com.ekattorit.ekattorattendance.R;
 import com.ekattorit.ekattorattendance.databinding.ActivityHomeBinding;
@@ -30,6 +35,7 @@ import com.ekattorit.ekattorattendance.retrofit.RetrofitClient;
 import com.ekattorit.ekattorattendance.ui.SupportActivity;
 import com.ekattorit.ekattorattendance.ui.face.EmployeeListActivity;
 import com.ekattorit.ekattorattendance.ui.face.FaceRecognitionActivity;
+import com.ekattorit.ekattorattendance.ui.face.model.RpUpFace;
 import com.ekattorit.ekattorattendance.ui.home.adapter.RecentScanAdapter;
 import com.ekattorit.ekattorattendance.ui.home.model.RpRecentScan;
 import com.ekattorit.ekattorattendance.ui.home.model.ScanItem;
@@ -39,6 +45,7 @@ import com.ekattorit.ekattorattendance.ui.report.DailyAttendanceStatus;
 import com.ekattorit.ekattorattendance.ui.report.SingleRangeAttendance;
 import com.ekattorit.ekattorattendance.utils.AppConfig;
 import com.ekattorit.ekattorattendance.utils.AppProgressBar;
+import com.ekattorit.ekattorattendance.utils.EmployeeFacePreference;
 import com.ekattorit.ekattorattendance.utils.UserCredentialPreference;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationAvailability;
@@ -48,6 +55,7 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -63,11 +71,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private static final String TAG = "MainActivity";
     ActivityHomeBinding binding;
     UserCredentialPreference userCredentialPreference;
+    EmployeeFacePreference employeeFacePreference;
     private List<ScanItem> scanItemList = new ArrayList<>();
     private RecentScanAdapter recentScanAdapter;
     private FusedLocationProviderClient mFusedLocationClient;
     private static final int LOCATION_PERMISSION_ID = 102;
     boolean isScanFaceCircleClicked = false;
+    int OUTPUT_SIZE = 192; //Output size of model
 
 
     @Override
@@ -75,7 +85,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
-        userCredentialPreference = UserCredentialPreference.getPrefarences(HomeActivity.this);
+        userCredentialPreference = UserCredentialPreference.getPreferences(HomeActivity.this);
+        employeeFacePreference = EmployeeFacePreference.getPreferences(HomeActivity.this);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         binding.navigationDrawer.setNavigationItemSelectedListener(this);
         binding.tvTotalScanCard.setText(MessageFormat.format("মোট স্ক্যান হয়েছে {0} জন", userCredentialPreference.getTotalScan()));
@@ -206,13 +217,68 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             startActivity(intent);
             //finish();
             return true;
+        } else if (id == R.id.sync_face) {
+            //closeDrawer();
+            syncFace();
+            //finish();
+            return true;
         }
 
         return false;
     }
 
+    private void syncFace() {
+        Call<RpUpFace> newScanCall = RetrofitClient
+                .getInstance()
+                .getApi()
+                .syncFace(userCredentialPreference.getUserId());
+
+        newScanCall.enqueue(new Callback<RpUpFace>() {
+            @Override
+            public void onResponse(Call<RpUpFace> call, Response<RpUpFace> response) {
+                Log.d(TAG, "onResponse: " + response.code());
+                if (response.code() == 200) {
+                    assert response.body() != null;
+                   if (response.body().getFaceEmbeddings() != null && !response.body().getFaceEmbeddings().isEmpty()){
+                       Log.d(TAG, "onResponse:  Face Ebd found: ");
+                       employeeFacePreference.setEmpFace(response.body().getFaceEmbeddings());
+                   }else {
+                       employeeFacePreference.setEmpFace(getString(R.string.face_default_value));
+                   }
+
+                    Snackbar.make(binding.mainView, "Face sync success", Snackbar.LENGTH_LONG).show();
+                } else {
+                    try {
+                        Log.d(TAG, "onResponse: Error: " + response.errorBody().string());
+                        Toast.makeText(HomeActivity.this, " কিছু একটা সমস্যা হয়েছে " + response.errorBody().string(), Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RpUpFace> call, Throwable t) {
+                Toast.makeText(HomeActivity.this, " কিছু একটা সমস্যা হয়েছে " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "onFailure: Error: " + t.getMessage());
+            }
+        });
+    }
+
+    //Save Faces to Shared Preferences.Conversion of Recognition objects to json string
+    private void insertToSP(String face) {
+//        SharedPreferences sharedPreferences = getSharedPreferences("HashMap", MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.putString("map", face);
+//        editor.apply();
+        employeeFacePreference.setEmpFace(face);
+
+
+    }
+
     private void logout() {
-        userCredentialPreference.deleteSharedPrefarance(HomeActivity.this);
+        userCredentialPreference.deleteSharedPreference(HomeActivity.this);
         Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         finish();
@@ -222,7 +288,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private void closeDrawer() {
         binding.drawerLayout.closeDrawer(GravityCompat.START);
     }
-
 
 
     //-------------------------------------- Location related --------------------------------------

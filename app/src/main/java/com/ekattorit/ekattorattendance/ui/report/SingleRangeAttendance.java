@@ -58,7 +58,7 @@ public class SingleRangeAttendance extends AppCompatActivity {
         setContentView(R.layout.activity_single_range_attendance);
         binding = DataBindingUtil.setContentView(SingleRangeAttendance.this, R.layout.activity_single_range_attendance);
         binding.toolbar.title.setText(getString(R.string.single_employee_attendance_status));
-        userCredentialPreference = UserCredentialPreference.getPrefarences(SingleRangeAttendance.this);
+        userCredentialPreference = UserCredentialPreference.getPreferences(SingleRangeAttendance.this);
 
         String currentDate = java.text.DateFormat.getDateInstance().format(Calendar.getInstance().getTime());
         binding.tvStartDate.setText(currentDate);

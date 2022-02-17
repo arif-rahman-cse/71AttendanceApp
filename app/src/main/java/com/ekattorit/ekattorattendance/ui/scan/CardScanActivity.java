@@ -36,7 +36,7 @@ public class CardScanActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card_scan);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_card_scan);
-        userCredentialPreference = UserCredentialPreference.getPrefarences(this);
+        userCredentialPreference = UserCredentialPreference.getPreferences(this);
         userCurrentAddress = getIntent().getStringExtra(AppConfig.ADDRESS);
         latitude = getIntent().getDoubleExtra(AppConfig.LATITUDE, 0.0);
         longitude = getIntent().getDoubleExtra(AppConfig.LONGITUDE, 0.0);

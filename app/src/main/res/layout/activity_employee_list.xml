@@ -28,16 +28,27 @@
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:clickable="true"
                     android:focusable="true"
-                    android:padding="6dp"
+                    android:padding="12dp"
                     app:srcCompat="@drawable/ic_arrow_back" />
 
                 <TextView
                     android:id="@+id/title"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     tools:text="Toolbar title" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_upload_face"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="12dp"
+                    android:src="@drawable/ic_up" />
 
             </androidx.appcompat.widget.Toolbar>
 

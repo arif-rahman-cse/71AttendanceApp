@@ -48,6 +48,11 @@
         android:checkableBehavior="single">
 
         <item
+            android:id="@+id/sync_face"
+            android:icon="@drawable/ic_sync"
+            android:title="@string/sync" />
+
+        <item
             android:id="@+id/support_number"
             android:icon="@drawable/ic_support"
             android:title="@string/support" />

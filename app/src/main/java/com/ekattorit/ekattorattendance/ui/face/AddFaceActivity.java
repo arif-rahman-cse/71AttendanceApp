@@ -83,7 +83,6 @@ public class AddFaceActivity extends AppCompatActivity {
     private static final String TAG = "AddFaceActivity";
 
     Context context = AddFaceActivity.this;
-
     private ActivityAddFaceBinding binding;
     private static final int MY_CAMERA_REQUEST_CODE = 100;
     int cam_face = CameraSelector.LENS_FACING_BACK; //Default Back Camera
@@ -107,6 +106,8 @@ public class AddFaceActivity extends AppCompatActivity {
 
     String employeeId, employeeName;
 
+    //int matchCounter = 0;
+
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -116,8 +117,6 @@ public class AddFaceActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(AddFaceActivity.this, R.layout.activity_add_face);
         employeeId = getIntent().getStringExtra(AppConfig.EMP_ID);
         employeeName = getIntent().getStringExtra(AppConfig.EMP_NAME);
-        Log.d(TAG, "onCreate: Scan Employee ID: " + employeeId);
-
         binding.tvEmpName.setText(employeeName);
         binding.tvEmpId.setText(employeeId);
 
@@ -142,64 +141,7 @@ public class AddFaceActivity extends AppCompatActivity {
             cameraBind();
         });
 
-        binding.btnAddFace.setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                addFace();
-            }
-        }));
-
-
-        /**
-         *
-         *
-         *
-        //On-screen Action Button
-        binding.btnAction.setOnClickListener(v -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setTitle("Select Action:");
-
-            // add a checkbox list
-            String[] names = {"View Recognition List", "Update Recognition List",};
-
-            builder.setItems(names, (dialog, which) -> {
-
-                switch (which) {
-                    case 0:
-                        displaynameListview();
-                        break;
-                    case 1:
-                        updatenameListview();
-                        break;
-                    case 2:
-                        insertToSP(registered, false);
-                        break;
-                    case 3:
-                        //registered.putAll(readFromSP());
-                        break;
-                    case 4:
-                        clearnameList();
-                        break;
-                    case 5:
-                        //loadphoto();
-                        break;
-                }
-
-            });
-
-
-            builder.setPositiveButton("OK", (dialog, which) -> {
-
-            });
-            builder.setNegativeButton("Cancel", null);
-
-            // create and show the alert dialog
-            AlertDialog dialog = builder.create();
-            dialog.show();
-        });
-
-         */
+        binding.btnAddFace.setOnClickListener((v -> addFace()));
 
         //Load model
         try {
@@ -221,81 +163,7 @@ public class AddFaceActivity extends AppCompatActivity {
 
     }
 
-    private void updatenameListview() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        if (registered.isEmpty()) {
-            builder.setTitle("No Faces Added!!");
-            builder.setPositiveButton("OK", null);
-        } else {
-            builder.setTitle("Select Recognition to delete:");
-            Log.d(TAG, "updatenameListview: "+ registered.toString());
-            // add a checkbox list
-            String[] names = new String[registered.size()];
-            boolean[] checkedItems = new boolean[registered.size()];
-            int i = 0;
-            for (Map.Entry<String, SimilarityClassifier.Recognition> entry : registered.entrySet()) {
-                //System.out.println("NAME"+entry.getKey());
-                names[i] = entry.getKey();
-                checkedItems[i] = false;
-                i = i + 1;
 
-            }
-
-            builder.setMultiChoiceItems(names, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                    // user checked or unchecked a box
-                    //Toast.makeText(MainActivity.this, names[which], Toast.LENGTH_SHORT).show();
-                    checkedItems[which] = isChecked;
-
-                }
-            });
-
-
-            builder.setPositiveButton("OK", (dialog, which) -> {
-
-                // System.out.println("status:"+ Arrays.toString(checkedItems));
-                for (int i1 = 0; i1 < checkedItems.length; i1++) {
-                    //System.out.println("status:"+checkedItems[i]);
-                    if (checkedItems[i1]) {
-//                                Toast.makeText(MainActivity.this, names[i], Toast.LENGTH_SHORT).show();
-                        registered.remove(names[i1]);
-                    }
-
-                }
-
-
-                String jsonString = new Gson().toJson(registered);
-                SharedPreferences sharedPreferences = getSharedPreferences("HashMap", MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("map", jsonString);
-                editor.apply();
-                Toast.makeText(context, "Recognitions Updated", Toast.LENGTH_SHORT).show();
-
-            });
-            builder.setNegativeButton("Cancel", null);
-
-            // create and show the alert dialog
-            AlertDialog dialog = builder.create();
-            dialog.show();
-        }
-    }
-
-    private void clearnameList() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Do you want to delete all Recognitions?");
-        builder.setPositiveButton("Delete All", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                registered.clear();
-                Toast.makeText(context, "Recognitions Cleared", Toast.LENGTH_SHORT).show();
-            }
-        });
-        insertToSP(registered, true);
-        builder.setNegativeButton("Cancel", null);
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
 
 
     //Save Faces to Shared Preferences.Conversion of Recognition objects to json string
@@ -305,10 +173,9 @@ public class AddFaceActivity extends AppCompatActivity {
         else
             jsonMap.putAll(readFromSP());
         String jsonString = new Gson().toJson(jsonMap);
-//        for (Map.Entry<String, SimilarityClassifier.Recognition> entry : jsonMap.entrySet())
-//        {
-//            System.out.println("Entry Input "+entry.getKey()+" "+  entry.getValue().getExtra());
-//        }
+        Log.d(TAG, "insertToSP: All Face: "+ readFromSP());
+        Log.d(TAG, "insertToSP: "+jsonString);
+
         SharedPreferences sharedPreferences = getSharedPreferences("HashMap", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("map", jsonString);
@@ -326,37 +193,6 @@ public class AddFaceActivity extends AppCompatActivity {
 
     }
 
-
-    private void displaynameListview() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        // System.out.println("Registered"+registered);
-        if (registered.isEmpty())
-            builder.setTitle("No Faces Added!!");
-        else
-            builder.setTitle("Recognitions:");
-
-        // add a checkbox list
-        String[] names = new String[registered.size()];
-        boolean[] checkedItems = new boolean[registered.size()];
-        int i = 0;
-        for (Map.Entry<String, SimilarityClassifier.Recognition> entry : registered.entrySet()) {
-            //System.out.println("NAME"+entry.getKey());
-            names[i] = entry.getKey();
-            checkedItems[i] = false;
-            i = i + 1;
-
-        }
-        builder.setItems(names, null);
-
-
-        builder.setPositiveButton("OK", (dialog, which) -> {
-
-        });
-
-        // create and show the alert dialog
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
 
     //Load Faces from Shared Preferences.Json String to Recognition object
     private HashMap<String, SimilarityClassifier.Recognition> readFromSP() {
@@ -401,12 +237,14 @@ public class AddFaceActivity extends AppCompatActivity {
     private void addFace() {
         {
 
-            start = false;
-            SimilarityClassifier.Recognition result = new SimilarityClassifier.Recognition(
-                    "0", "", -1f);
+            //start = false;
+            SimilarityClassifier.Recognition result = new SimilarityClassifier.Recognition("0", employeeName, -1f);
             result.setExtra(embeedings);
+            //result.setExtra(employeeName);
             registered.put(employeeId, result);
             insertToSP(registered, false);
+            Log.d(TAG, "addFace: Face list: "+ registered.toString());
+            Log.d(TAG, "addFace: Emb: "+ embeedings);
         }
     }
 
@@ -506,14 +344,12 @@ public class AddFaceActivity extends AppCompatActivity {
                                                     if (registered.isEmpty()){
                                                         binding.tvInstruction.setText("ফেইস যুক্ত করুন");
                                                         binding.tvInstruction.setTextColor((getResources().getColor(R.color.green_deep)));
-
                                                         binding.btnAddFace.setBackgroundColor(getResources().getColor(R.color.green_deep));
                                                         binding.btnAddFace.setClickable(true);
                                                     }
                                                     else{
                                                         binding.tvInstruction.setText("কোন ফেইস ডিটেক্ট হয়নি!");
                                                         binding.tvInstruction.setTextColor((getResources().getColor(R.color.yellow)));
-
                                                         binding.btnAddFace.setBackgroundColor(getResources().getColor(R.color.light_gray));
                                                         binding.btnAddFace.setClickable(false);
                                                     }
@@ -610,7 +446,7 @@ public class AddFaceActivity extends AppCompatActivity {
                 final String name = nearest.first;
                 label = name;
                 distance = nearest.second;
-                if (distance < 1.000f) //If distance between Closest found face is more than 1.000 ,then output UNKNOWN face.
+                if (distance < 0.8) //If distance between Closest found face is more than 1.000 ,then output UNKNOWN face.
                 {
                     binding.tvInstruction.setText("এই মুখ ইতিমধ্যে যুক্ত করা হয়েছে");
                     binding.tvInstruction.setTextColor((getResources().getColor(R.color.red)));
@@ -629,6 +465,7 @@ public class AddFaceActivity extends AppCompatActivity {
                 }
 
                 System.out.println("nearest: " + name + " - distance: " + distance);
+                //binding.tvMatchPercent.setText(String.valueOf(distance));
 
 
             }

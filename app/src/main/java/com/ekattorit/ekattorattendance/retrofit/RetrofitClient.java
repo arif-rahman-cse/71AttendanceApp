@@ -9,8 +9,8 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class RetrofitClient {
 
-    //private static final String BASE_URL = AppConfig.Base_URL_ONLINE;
-    private static final String BASE_URL = AppConfig.Base_URL_ONLINE;
+    private static final String BASE_URL = AppConfig.Base_URL_DEV;
+    //private static final String BASE_URL = AppConfig.Base_URL_DEV;
     private static RetrofitClient mInstance;
     private final Retrofit retrofit;
 
